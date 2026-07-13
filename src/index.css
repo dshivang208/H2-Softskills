@@ -7,3 +7,33 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: #FAF9F6; /* Minimalist off-white background */
 }
+
+/* Used by Services.jsx service card carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.card-gradient-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(2, 2, 8, 0) 0%,
+    rgba(2, 2, 8, 0.35) 45%,
+    rgba(2, 2, 8, 0.95) 100%
+  );
+}
+
+/* Used by Stats.jsx statistics bar */
+.stats-container {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+}

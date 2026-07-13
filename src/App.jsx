@@ -1,4 +1,6 @@
 import Navbar from './components/Navbar';
+import Services from './components/Services';
+import Stats from './components/Stats';
 import heroGraphic from './assets/hero-graphic.png';
 import { ArrowRight, Play } from 'lucide-react';
 
@@ -118,6 +120,12 @@ function App() {
           </div>
         </div>
       </main>
+
+      {/* What We Do / Services Section */}
+      <Services />
+
+      {/* Statistics Bar */}
+      <Stats />
 
       {/* Footer */}
       <footer className="bg-[#020208] border-t border-white/5 py-8 text-center text-xs text-stone-500">
