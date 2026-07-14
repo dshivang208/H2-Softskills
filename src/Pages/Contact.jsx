@@ -47,10 +47,10 @@ function Contact() {
           {/* Left Column: Narrative & Info */}
           <div className="lg:col-span-5 space-y-12">
             <header className="space-y-4">
-              <span className="font-['JetBrains_Mono'] text-xs font-semibold tracking-[0.3em] text-[#004ac6] bg-[#003594]/10 px-4 py-1.5 rounded-full inline-block">
+              <span className="font-['Hanken_Grotesk'] text-lg font-semibold tracking-[0.3em] text-[#004ac6] bg-[#003594]/10 px-4 py-1.5 rounded-full inline-block">
                 CONTACT US
               </span>
-              <h1 className="font-['Hanken_Grotesk'] text-4xl md:text-5xl lg:text-[56px] lg:leading-[64px] leading-tight text-[#131b2e] font-bold">
+              <h1 className="font-['Hanken_Grotesk'] text-4xl md:text-5xl lg:text-[56px] lg:leading-[64px] leading-tight text-[#131b2e] font-semibold">
                 Let&apos;s Build Something
                 <br />
                 <span className="gradient-text">Great Together</span>
@@ -61,17 +61,17 @@ function Contact() {
               </p>
             </header>
 
-            <div className="space-y-8">
+            <div className="space-y-8 font-['Hanken_Grotesk'] ">
               {contactInfo.map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-6 group">
                   <div className="w-12 h-12 flex-shrink-0 rounded-xl bg-[#e1e7ff] flex items-center justify-center transition-all group-hover:bg-[#003594]/20 group-hover:scale-110">
                     <Icon className="w-5 h-5 text-[#003594]" strokeWidth={2} />
                   </div>
                   <div className="space-y-1">
-                    <p className="font-['JetBrains_Mono'] text-xs font-bold tracking-[0.3em] text-black">
+                    <p className="font-['Hanken_Grotesk'] text-xs font-bold tracking-[0.3em] text-black">
                       {label}
                     </p>
-                    <p className="text-xl text-[#131b2e] font-bold">{value}</p>
+                    <p className="text-xl text-[#131b2e] font-['Hanken_Grotesk'] font-bold">{value}</p>
                   </div>
                 </div>
               ))}
@@ -97,7 +97,7 @@ function Contact() {
                   />
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 font-['Hanken_Grotesk']">
                   <label className={labelClass('email')}>YOUR EMAIL</label>
                   <input
                     type="email"
