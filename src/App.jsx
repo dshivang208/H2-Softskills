@@ -1,6 +1,10 @@
 import Navbar from './components/Navbar';
 import Services from './components/Services';
 import Stats from './components/Stats';
+import FeaturedProjects from './components/FeaturedProjects';
+import TechStack from './components/TechStack';
+import CtaBanner from './components/CtaBanner';
+import Footer from './components/Footer';
 import heroGraphic from './assets/hero-graphic.png';
 import { ArrowRight, Play } from 'lucide-react';
 
@@ -127,12 +131,17 @@ function App() {
       {/* Statistics Bar */}
       <Stats />
 
+      {/* Featured Projects */}
+      <FeaturedProjects />
+
+      {/* Technologies We Work With */}
+      <TechStack />
+
+      {/* Call To Action Banner */}
+      <CtaBanner />
+
       {/* Footer */}
-      <footer className="bg-[#020208] border-t border-white/5 py-8 text-center text-xs text-stone-500">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          &copy; {new Date().getFullYear()} H2 Softskills. All rights reserved.
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
