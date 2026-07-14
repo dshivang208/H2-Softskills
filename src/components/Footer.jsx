@@ -88,7 +88,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-2">
-            <img src={logo} alt="H2 Softskills Logo" className="h-32 md:h-36 w-auto object-contain -mb-4" />
+            <img src={logo} alt="H2 Softskills Logo" className="h-36 md:h-40 w-auto object-contain -mb-4" />
             <p className="text-gray-400 text-sm leading-relaxed mb-5 max-w-xs">
               We empower businesses with digital solutions that drive innovation, growth and success in the digital world.
             </p>

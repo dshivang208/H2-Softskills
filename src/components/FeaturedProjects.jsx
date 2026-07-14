@@ -143,7 +143,7 @@ export default function FeaturedProjects() {
 
   return (
     <section
-      className="pt-6 pb-12 md:pt-8 md:pb-16 px-6 md:px-12 max-w-[1440px] mx-auto overflow-hidden"
+      className="pt-6 pb-8 md:pt-8 md:pb-16 px-6 md:px-12 max-w-[1440px] mx-auto overflow-hidden"
       data-purpose="portfolio-showcase"
       id="featured-projects"
     >

@@ -68,7 +68,7 @@ function App() {
 
             {/* Trust Section */}
             <div className="space-y-4 pt-8 border-t border-white/5">
-              <p className="text-sm font-medium text-white tracking-wide uppercase">
+              <p className="text-sm font-normal font-['Hanken_Grotesk'] text-white tracking-wide uppercase">
                 Trusted by innovative companies worldwide
               </p>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-6 opacity-75">

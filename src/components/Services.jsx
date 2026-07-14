@@ -171,16 +171,16 @@ export default function Services() {
   const scrollerRef = useRef(null);
 
   return (
-    <section className="relative pt-8 pb-4 overflow-hidden bg-[#faf8ff]">
+    <section className="relative pt-8 pb-2 overflow-hidden bg-[#faf8ff]">
       {/* Section Header */}
       <div className="max-w-7xl mx-auto px-6 mb-10">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
           {/* Left: Label + Heading */}
           <div className="lg:w-1/3">
-            <span className="font-['JetBrains_Mono'] text-[11px] font-bold tracking-[0.15em] text-[#004ac6] uppercase mb-4 block">
+            <span className="font-['Hanken_Grotesk'] text-[15px] font-bold tracking-[0.15em] text-[#004ac6] uppercase mb-4 block">
               WHAT WE DO
             </span>
-            <h2 className="font-['Hanken_Grotesk'] text-4xl lg:text-5xl font-extrabold text-[#131b2e] leading-[1.1] tracking-tight">
+            <h2 className="font-['Hanken_Grotesk'] text-4xl lg:text-5xl font-semibold text-[#131b2e] leading-[1.1] tracking-tight">
               End-to-End Digital Solutions <br /> Tailored for{' '}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#4edea3] to-[#2563eb] font-extrabold">
                 Your Business
@@ -215,7 +215,7 @@ export default function Services() {
       <div className="relative">
         <div
           ref={scrollerRef}
-          className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory px-[5vw] gap-6 pb-12"
+          className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory px-[5vw] gap-6 pb-8"
         >
           {services.map((service) => (
             <ServiceCard key={service.id} service={service} />
