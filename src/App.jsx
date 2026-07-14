@@ -3,6 +3,7 @@ import Services from './components/Services';
 import Stats from './components/Stats';
 import FeaturedProjects from './components/FeaturedProjects';
 import TechStack from './components/TechStack';
+import OurProcess from './components/OurProcess';
 import CtaBanner from './components/CtaBanner';
 import Footer from './components/Footer';
 import heroGraphic from './assets/hero-graphic.png';
@@ -68,7 +69,7 @@ function App() {
 
             {/* Trust Section */}
             <div className="space-y-4 pt-8 border-t border-white/5">
-              <p className="text-sm font-normal font-['Hanken_Grotesk'] text-white tracking-wide uppercase">
+              <p className="text-sm font-medium text-white tracking-wide uppercase">
                 Trusted by innovative companies worldwide
               </p>
               <div className="flex flex-wrap items-center gap-x-8 gap-y-6 opacity-75">
@@ -136,6 +137,9 @@ function App() {
 
       {/* Technologies We Work With */}
       <TechStack />
+
+      {/* Our Process */}
+      <OurProcess />
 
       {/* Call To Action Banner */}
       <CtaBanner />

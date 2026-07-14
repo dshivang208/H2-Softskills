@@ -37,3 +37,37 @@ body {
   height: 40px;
   background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
 }
+
+/* Used by OurProcess.jsx step cards */
+.step-card {
+  background-color: rgba(26, 26, 30, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+.step-card:hover {
+  border-color: rgba(255, 140, 0, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* Used by TechStack.jsx auto-scrolling marquee */
+.marquee-track {
+  width: max-content;
+  animation: marquee-scroll 55s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+}
