@@ -1,17 +1,20 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Items with a `to` are real routes (react-router Link).
+  // Items with only `href` are placeholder anchors until those pages exist.
   const navItems = [
-    { name: 'Home', href: '#' },
-    { name: 'About Us', href: '#' },
+    { name: 'Home', to: '/' },
+    { name: 'About Us', to: '/about' },
     { name: 'Services', href: '#' },
     { name: 'Projects', href: '#' },
     { name: 'Blog', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Contact', to: '/contact' },
   ];
 
   return (
@@ -31,16 +34,27 @@ export default function Navbar() {
 
           {/* Desktop Navigations in the Middle */}
           <div className="hidden md:flex md:items-center md:gap-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="relative text-[16px] font-medium text-black transition-colors duration-300 hover:text-stone-900 group"
-              >
-                {item.name}
-                <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#00b06b] transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
+            {navItems.map((item) =>
+              item.to ? (
+                <Link
+                  key={item.name}
+                  to={item.to}
+                  className="relative text-[16px] font-medium text-black transition-colors duration-300 hover:text-stone-900 group"
+                >
+                  {item.name}
+                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#00b06b] transition-all duration-300 group-hover:w-full" />
+                </Link>
+              ) : (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="relative text-[16px] font-medium text-black transition-colors duration-300 hover:text-stone-900 group"
+                >
+                  {item.name}
+                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#00b06b] transition-all duration-300 group-hover:w-full" />
+                </a>
+              )
+            )}
           </div>
 
           {/* Call-to-action Button on the Right */}
@@ -82,15 +96,27 @@ export default function Navbar() {
         id="mobile-menu"
       >
         <div className="space-y-1 px-4 pb-6 pt-3 border-t border-stone-200/60 bg-[#FAF9F6] shadow-inner">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="block rounded-lg px-4 py-3 text-base font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors duration-200"
-            >
-              {item.name}
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.to ? (
+              <Link
+                key={item.name}
+                to={item.to}
+                onClick={() => setIsOpen(false)}
+                className="block rounded-lg px-4 py-3 text-base font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors duration-200"
+              >
+                {item.name}
+              </Link>
+            ) : (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className="block rounded-lg px-4 py-3 text-base font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors duration-200"
+              >
+                {item.name}
+              </a>
+            )
+          )}
           <div className="mt-6 px-4">
             <a
               href="#"

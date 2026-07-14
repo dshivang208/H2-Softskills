@@ -71,3 +71,104 @@ body {
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
 }
+
+/* Used by Contact.jsx page */
+.tech-grid {
+  background-image: radial-gradient(circle, #c3c6d6 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #006c49 0%, #1b55d0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-btn {
+  background: linear-gradient(90deg, #003594 0%, #006c49 100%);
+  transition: all 0.3s ease;
+}
+.gradient-btn:hover:not(:disabled) {
+  box-shadow: 0 0 20px rgba(0, 53, 148, 0.4);
+  transform: translateY(-2px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.floating-radial {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Used by About.jsx page */
+@keyframes about-glow {
+  0% { filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3)); }
+  50% { filter: drop-shadow(0 0 25px rgba(0, 255, 136, 0.6)); }
+  100% { filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3)); }
+}
+.about-animate-glow {
+  animation: about-glow 4s ease-in-out infinite;
+}
+
+.about-gradient-text {
+  background: linear-gradient(90deg, #2563eb 0%, #00ff88 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes about-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.about-orbit-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-orbit-ring {
+  position: absolute;
+  border: 1.5px solid rgba(0, 255, 136, 0.2);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
+}
+.about-electron {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #2563eb, #00ff88);
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00ff88, 0 0 20px #2563eb;
+}
+.about-electron-path {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: about-orbit linear infinite;
+}
+.about-path-1 { animation-duration: 8s; }
+.about-path-2 { animation-duration: 12s; animation-direction: reverse; }
+.about-path-3 { animation-duration: 10s; }
+.about-path-4 { animation-duration: 5s; }
