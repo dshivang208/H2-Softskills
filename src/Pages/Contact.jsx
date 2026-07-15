@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Phone, Mail, MapPin, Clock, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const contactInfo = [
   { icon: Phone, label: 'PHONE', value: '+91 98765-43210' },
@@ -11,9 +11,14 @@ const contactInfo = [
 const inputClass =
   'w-full bg-[#f2f3ff] border border-[#c3c6d6]/50 rounded-xl px-6 py-4 focus:ring-2 focus:ring-[#003594] focus:border-transparent outline-none transition-all placeholder:text-[#a3a7bd] text-[#131b2e]';
 
+// Points at the Express backend in server/. Override with a Vite env var
+// (VITE_API_URL) when deploying so the frontend can hit a different host.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 function Contact() {
   const [focusedField, setFocusedField] = useState(null);
-  const [status, setStatus] = useState('idle'); // idle | sending | sent
+  const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+  const [errorMessage, setErrorMessage] = useState('');
   const formRef = useRef(null);
 
   const labelClass = (field) =>
@@ -21,19 +26,43 @@ function Contact() {
       focusedField === field ? 'text-[#003594]' : 'text-[#434654]'
     }`;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (status !== 'idle') return;
+    if (status === 'sending') return;
+
+    const formData = new FormData(formRef.current);
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      subject: formData.get('subject'),
+      message: formData.get('message'),
+    };
 
     setStatus('sending');
-    setTimeout(() => {
+    setErrorMessage('');
+
+    try {
+      const res = await fetch(`${API_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+
       setStatus('sent');
       setTimeout(() => {
         setStatus('idle');
         setFocusedField(null);
         formRef.current?.reset();
       }, 3000);
-    }, 1500);
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err.message || 'Could not send your message. Please try again.');
+    }
   };
 
   return (
@@ -89,6 +118,7 @@ function Contact() {
                   <label className={labelClass('name')}>YOUR NAME</label>
                   <input
                     type="text"
+                    name="name"
                     placeholder="e.g. John Doe"
                     className={inputClass}
                     onFocus={() => setFocusedField('name')}
@@ -101,6 +131,7 @@ function Contact() {
                   <label className={labelClass('email')}>YOUR EMAIL</label>
                   <input
                     type="email"
+                    name="email"
                     placeholder="e.g. john@company.com"
                     className={inputClass}
                     onFocus={() => setFocusedField('email')}
@@ -113,6 +144,7 @@ function Contact() {
                   <label className={labelClass('subject')}>SUBJECT</label>
                   <input
                     type="text"
+                    name="subject"
                     placeholder="Project Inquiry"
                     className={inputClass}
                     onFocus={() => setFocusedField('subject')}
@@ -125,6 +157,7 @@ function Contact() {
                   <label className={labelClass('message')}>YOUR MESSAGE</label>
                   <textarea
                     rows={6}
+                    name="message"
                     placeholder="Describe your project goals and requirements..."
                     className={`${inputClass} resize-none`}
                     onFocus={() => setFocusedField('message')}
@@ -133,15 +166,15 @@ function Contact() {
                   />
                 </div>
 
-                <div className="md:col-span-2 pt-4">
+                <div className="md:col-span-2 pt-4 space-y-3">
                   <button
                     type="submit"
-                    disabled={status !== 'idle'}
+                    disabled={status === 'sending' || status === 'sent'}
                     className={`w-full text-white text-lg font-bold py-5 rounded-2xl flex items-center justify-center gap-3 transition-all duration-300 ${
-                      status === 'sent' ? 'bg-[#006c49]' : 'gradient-btn'
-                    } ${status !== 'idle' ? 'opacity-80 cursor-not-allowed' : ''}`}
+                      status === 'sent' ? 'bg-[#006c49]' : status === 'error' ? 'bg-red-600' : 'gradient-btn'
+                    } ${status === 'sending' || status === 'sent' ? 'opacity-80 cursor-not-allowed' : ''}`}
                   >
-                    {status === 'idle' && (
+                    {(status === 'idle' || status === 'error') && (
                       <>
                         Send Message
                         <ArrowRight className="w-5 h-5" />
@@ -160,6 +193,12 @@ function Contact() {
                       </>
                     )}
                   </button>
+                  {status === 'error' && (
+                    <p className="flex items-center gap-2 text-sm font-semibold text-red-600">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      {errorMessage}
+                    </p>
+                  )}
                 </div>
               </form>
             </div>

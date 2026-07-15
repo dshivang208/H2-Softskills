@@ -1,0 +1,20 @@
+{
+  "name": "h2-softskills-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Express backend for the H2 Softskills contact form — stores enquiries in Supabase and emails notifications via Resend.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "resend": "^4.0.1"
+  }
+}
