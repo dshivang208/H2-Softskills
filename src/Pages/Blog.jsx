@@ -92,14 +92,14 @@ function Blog() {
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-12 md:py-20">
         {/* Header Section */}
-        <header className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
+        <header className="flex flex-col lg:flex-row lg:items-end justify-between  mb-16 gap-8">
           <div className="max-w-3xl">
-            <span className="font-['JetBrains_Mono'] text-[#003594] text-xs leading-4 tracking-[0.3em] font-semibold uppercase mb-3 block">
+            <span className="font-['Hanken_Grotesk'] text-[#003594] text-lg leading-4 tracking-[0.3em] font-bold uppercase mb-3 block">
               Our Blog
             </span>
-            <h1 className="font-['Hanken_Grotesk'] text-4xl md:text-[56px] leading-tight md:leading-[64px] font-black tracking-tight text-[#131b2e] mb-4">
+            <h1 className="font-['Hanken_Grotesk'] text-4xl md:text-[54px] leading-tight md:leading-[64px] font-black tracking-tight text-[#131b2e] mb-4">
               Insights, Ideas &amp; <br className="hidden md:block" />
               Industry <span className="gradient-text">Trends</span>
             </h1>

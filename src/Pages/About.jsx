@@ -53,14 +53,14 @@ function About() {
   return (
     <main className="min-h-screen flex flex-col justify-center">
       {/* Hero Section */}
-      <section className="bg-[#010816] text-white py-20 px-6 lg:px-16 overflow-hidden relative">
+      <section className="bg-[#010816] text-white pt-10 pb-20 px-6 lg:px-16 overflow-hidden relative">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="z-10">
-            <span className="text-[#00ff88] font-bold text-xs tracking-widest uppercase mb-4 block">
+            <span className="text-[#00ff88] font-bold text-xs pb-4 tracking-widest uppercase mb-4 block">
               About Us
             </span>
-            <h1 className="text-4xl lg:text-6xl font-extrabold leading-tight mb-6">
+            <h1 className="text-5xl lg:text-4xl font-bold leading-tight mb-6">
               We Build Digital Solutions
               <br />
               That Drive <span className="about-gradient-text">Real Impact</span>

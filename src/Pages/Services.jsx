@@ -4,12 +4,12 @@ import { services, ServiceCard } from '../components/Services';
 
 function Services() {
   return (
-    <main className="bg-[#f8fafc] pt-16 md:pt-24 pb-20">
+    <main className="bg-[#f8fafc] pt-10 pb-16 md:pt-24 pb-20">
       {/* Hero Section */}
       <section className="px-6 md:px-12 mb-16 md:mb-24 max-w-7xl mx-auto text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-full mb-4">
           <span className="w-2 h-2 bg-[#2563eb] rounded-full animate-pulse" />
-          <span className="font-['JetBrains_Mono'] text-xs font-semibold tracking-[0.1em] text-[#2563eb]">
+          <span className="font-['Hanken_Grotesk'] text-xs font-semibold tracking-[0.1em] text-[#2563eb]">
             OUR SERVICES
           </span>
         </div>

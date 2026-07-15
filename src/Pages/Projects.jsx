@@ -45,10 +45,10 @@ function Projects() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 bg-[#faf8ff]">
       {/* Header Section */}
       <div className="mb-12">
-        <p className="text-[#003594] font-bold text-sm tracking-widest uppercase mb-3 font-['JetBrains_Mono']">
+        <p className="text-[#003594] font-bold text-sm tracking-widest uppercase mb-3 font-['Hanken_Grotesk']">
           Our Projects
         </p>
-        <h1 className="text-4xl md:text-6xl font-black text-[#131b2e] mb-6 leading-tight font-['Hanken_Grotesk']">
+        <h1 className="text-4xl md:text-5xl font-black text-[#131b2e] mb-6 leading-tight font-['Hanken_Grotesk']">
           Work That Speaks
           <br />
           For{' '}
