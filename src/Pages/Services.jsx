@@ -27,7 +27,7 @@ function Services() {
 
       {/* Services Grid — same card design used on the Home page */}
       <section className="px-6 md:px-12 mb-16 md:mb-24 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {services.map((service) => (
             <ServiceCard key={service.id} service={service} fullWidth />
           ))}

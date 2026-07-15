@@ -10,7 +10,7 @@ const categories = ['All', ...new Set(projects.map((project) => project.tag))];
 
 function ProjectCard({ project }) {
   return (
-    <article className="bg-white rounded-3xl overflow-hidden border border-[#e1e7ff] shadow-sm group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
+    <article className="bg-white rounded-2xl overflow-hidden border border-[#e1e7ff] shadow-sm group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="aspect-[16/10] bg-[#283044] overflow-hidden">
         <img
           alt={project.title}
@@ -18,16 +18,16 @@ function ProjectCard({ project }) {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
       </div>
-      <div className="p-8">
-        <h3 className="text-2xl font-bold text-[#131b2e] mb-1 font-['Hanken_Grotesk']">
+      <div className="p-4">
+        <h3 className="text-base font-bold text-[#131b2e] mb-0.5 font-['Hanken_Grotesk']">
           {project.title}
         </h3>
         <p
-          className={`text-sm font-semibold mb-4 uppercase tracking-wider ${accentText[project.accent]}`}
+          className={`text-xs font-semibold mb-2 uppercase tracking-wider ${accentText[project.accent]}`}
         >
           {project.tag}
         </p>
-        <p className="text-[#434654] leading-relaxed">{project.description}</p>
+        <p className="text-[#434654] text-sm leading-relaxed line-clamp-2">{project.description}</p>
       </div>
     </article>
   );
@@ -61,26 +61,28 @@ function Projects() {
         </p>
       </div>
 
-      {/* Filter Bar */}
-      <div className="flex flex-wrap gap-4 mb-16 justify-center md:justify-end">
-        {categories.map((category) => (
-          <button
-            key={category}
-            type="button"
-            onClick={() => setActiveCategory(category)}
-            className={`px-8 py-2.5 rounded-full font-semibold text-sm transition ${
-              activeCategory === category
-                ? 'bg-[#003594] text-white shadow-lg shadow-[#003594]/20'
-                : 'border border-[#c3c6d6] bg-white text-[#434654] hover:border-[#003594] hover:text-[#003594]'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
+      {/* Filter Bar — bleeds to the true screen edge and scrolls horizontally */}
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8 mb-16">
+        <div className="flex gap-2.5 overflow-x-auto no-scrollbar whitespace-nowrap px-4 sm:px-6 lg:px-8">
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setActiveCategory(category)}
+              className={`flex-none px-4 py-1.5 rounded-full font-semibold text-xs sm:text-sm transition ${
+                activeCategory === category
+                  ? 'bg-[#003594] text-white shadow-lg shadow-[#003594]/20'
+                  : 'border border-[#c3c6d6] bg-white text-[#434654] hover:border-[#003594] hover:text-[#003594]'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
         {filteredProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
