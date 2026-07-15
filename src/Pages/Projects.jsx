@@ -48,12 +48,11 @@ function Projects() {
         <p className="text-[#003594] font-bold text-sm tracking-widest uppercase mb-3 font-['Hanken_Grotesk']">
           Our Projects
         </p>
-        <h1 className="text-4xl md:text-5xl font-black text-[#131b2e] mb-6 leading-tight font-['Hanken_Grotesk']">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 max-w-3xl leading-tight text-[#0f172a] font-['Hanken_Grotesk']">
           Work That Speaks
           <br />
-          For{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#003594] to-[#006c49]">
-            Itself
+            For Itself
           </span>
         </h1>
         <p className="text-[#434654] max-w-xl text-lg leading-relaxed">

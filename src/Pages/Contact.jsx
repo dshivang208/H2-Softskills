@@ -76,10 +76,10 @@ function Contact() {
           {/* Left Column: Narrative & Info */}
           <div className="lg:col-span-5 space-y-12">
             <header className="space-y-4">
-              <span className="font-['Hanken_Grotesk'] text-lg font-semibold tracking-[0.3em] text-[#004ac6] bg-[#003594]/10 px-4 py-1.5 rounded-full inline-block">
+              <span className="font-['Hanken_Grotesk'] text-sm font-semibold tracking-[0.2em] text-[#004ac6] bg-[#003594]/10 px-3 py-1 rounded-full inline-block">
                 CONTACT US
               </span>
-              <h1 className="font-['Hanken_Grotesk'] text-4xl md:text-5xl lg:text-[56px] lg:leading-[64px] leading-tight text-[#131b2e] font-semibold">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 max-w-3xl leading-tight text-[#0f172a] font-['Hanken_Grotesk']">
                 Let&apos;s Build Something
                 <br />
                 <span className="gradient-text">Great Together</span>
