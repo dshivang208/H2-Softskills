@@ -23,7 +23,7 @@ export default function Navbar() {
         <div className="flex h-14 items-center justify-between">
           {/* Logo on the Left */}
           <div className="flex flex-shrink-0 items-center">
-            <a href="#" className="flex items-center">
+            <a href="/" className="flex items-center">
              <img
   src={logo}
   alt="H2 Softskills Logo"
@@ -60,7 +60,7 @@ export default function Navbar() {
           {/* Call-to-action Button on the Right */}
           <div className="hidden md:flex md:items-center">
             <a
-              href="#"
+              href="/contact"
               className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[#00b06b] to-[#004e92] px-10 py-2 text-base font-semibold text-white shadow-md shadow-emerald-500/10 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>Lets Build Together</span>
