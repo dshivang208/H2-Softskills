@@ -4,16 +4,16 @@ import { services, ServiceCard } from '../components/Services';
 
 function Services() {
   return (
-    <main className="bg-[#f8fafc] pt-10 pb-16 md:pt-24 pb-20">
+    <main className="bg-[#f8fafc] pt-4 pb-16 md:pt-16">
       {/* Hero Section */}
       <section className="px-6 md:px-12 mb-16 md:mb-24 max-w-7xl mx-auto text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-full mb-4">
           <span className="w-2 h-2 bg-[#2563eb] rounded-full animate-pulse" />
-          <span className="font-['Hanken_Grotesk'] text-xs font-semibold tracking-[0.1em] text-[#2563eb]">
+          <span className="font-['Hanken_Grotesk'] text-sm font-semibold tracking-[0.1em] text-[#2563eb]">
             OUR SERVICES
           </span>
         </div>
-        <h1 className="text-3xl md:text-5xl font-bold mb-4 max-w-3xl leading-tight text-[#0f172a] font-['Hanken_Grotesk']">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 max-w-3xl leading-tight text-[#0f172a] font-['Hanken_Grotesk']">
           End-to-End Solutions to{' '}
           <span className="bg-gradient-to-r from-[#2563eb] to-[#00a572] bg-clip-text text-transparent">
             Accelerate Your Growth

@@ -12,13 +12,13 @@ function Home() {
     <>
       {/* Hero Section with Graphic set as Background Image */}
       <main
-        className="relative w-full bg-[#020208] bg-contain bg-center bg-no-repeat text-white min-h-[calc(100vh-58px)] flex items-center"
+        className="relative w-full bg-[#020208] bg-contain bg-center bg-no-repeat text-white min-h-[60vh] lg:min-h-[calc(100vh-58px)] flex items-center"
         style={{ backgroundImage: `url(${heroGraphic})` }}
       >
         {/* Dark overlay for mobile readability */}
         <div className="absolute inset-0 bg-black/60 md:hidden z-0" />
 
-        <div className="relative z-10 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div className="relative z-10 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-4 md:py-6 lg:py-16">
           {/* Left aligned text content, matching the layout from the mockup */}
           <div className="max-w-xl md:max-w-2xl space-y-8 text-left">
 

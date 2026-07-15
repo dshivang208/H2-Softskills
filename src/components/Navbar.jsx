@@ -27,7 +27,7 @@ export default function Navbar() {
              <img
   src={logo}
   alt="H2 Softskills Logo"
-  className="pt-2 h-30 md:h-32 w-auto object-contain transition-transform duration-300 hover:scale-105"
+  className="pt-2 h-24 sm:h-28 md:h-36 lg:h-40 w-auto object-contain transition-transform duration-300 hover:scale-105"
 />
             </a>
           </div>
