@@ -3,6 +3,8 @@ import Stats from '../components/Stats';
 import FeaturedProjects from '../components/FeaturedProjects';
 import TechStack from '../components/TechStack';
 import OurProcess from '../components/OurProcess';
+import Clients from '../components/Clients';
+import Testimonials from '../components/Testimonials';
 import CtaBanner from '../components/CtaBanner';
 import heroGraphic from '../assets/hero-graphic.png';
 import { ArrowRight, Play } from 'lucide-react';
@@ -135,6 +137,12 @@ function Home() {
 
       {/* Our Process */}
       <OurProcess />
+
+      {/* Our Clients */}
+      <Clients />
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* Call To Action Banner */}
       <CtaBanner />
