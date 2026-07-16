@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import logo from '../assets/logo.png';
 
@@ -139,6 +140,8 @@ export default function Footer() {
             <a href="#" className="hover:text-gray-300 transition-colors">Privacy Policy</a>
             <span className="text-gray-700">|</span>
             <a href="#" className="hover:text-gray-300 transition-colors">Terms &amp; Conditions</a>
+            <span className="text-gray-700">|</span>
+            <Link to="/admin/login" className="hover:text-gray-300 transition-colors">Admin</Link>
           </div>
         </div>
       </div>

@@ -78,3 +78,36 @@ export async function sendAutoReplyEmail({ name, email, subject }) {
     html,
   });
 }
+
+/**
+ * Sends a newsletter broadcast to a single subscriber. Called once per
+ * recipient (in small batches) from POST /api/admin/broadcast — Resend
+ * doesn't get a "to" list here on purpose, so one subscriber can never see
+ * another subscriber's email address in the "to" header.
+ */
+export async function sendBroadcastEmail({ to, subject, message }) {
+  if (!resend) {
+    console.warn('[mailer] RESEND_API_KEY not set — skipping broadcast send.');
+    return { skipped: true };
+  }
+
+  // Plain-text messages get wrapped with line breaks preserved; if the
+  // admin already wrote HTML themselves it still displays fine either way.
+  const html = `
+    <div style="font-family: sans-serif; font-size: 15px; color: #131b2e; line-height: 1.6;">
+      <div style="white-space: pre-wrap;">${escapeHtml(message)}</div>
+      <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;" />
+      <p style="color:#9aa0b4; font-size:12px;">
+        You're receiving this because you subscribed to the H2 Softskills newsletter.
+      </p>
+    </div>
+  `;
+
+  return resend.emails.send({
+    from: MAIL_FROM,
+    to,
+    replyTo: MAIL_TO,
+    subject,
+    html,
+  });
+}
