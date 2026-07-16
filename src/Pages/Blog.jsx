@@ -13,6 +13,7 @@ const articles = [
       'Discover the latest trends in web development that will shape the future, from AI-driven coding to advanced frameworks.',
     date: 'May 15, 2024',
     readTime: '5 min read',
+    category: 'Web Development',
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuD5HDaJPlR0AAHXNoQLx_QLhg-YM2zWZVUy0kKl_D6CsKgRAbOjA4ru0meeCjvsaa6rB-f1oRM5drPzMYEbuCz8ayXrjvxd9qT6zd__Ia5yLye7TxgvorrKvb0GIvLc6hXAOuHC6fu2l2t2O8xZsr4HNBae2lP6VaNoa-5-O-jArdTG-aag1HJq7Om3rawVi-lEDOAd_iGVIrvZpX8dePqJSozzDITdPvtuJu9uJq2wx0WLigD5LXYzPA',
   },
@@ -23,6 +24,7 @@ const articles = [
       'Explore how blockchain technology is revolutionizing industries across the world with decentralization.',
     date: 'May 05, 2024',
     readTime: '6 min read',
+    category: 'Blockchain',
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuALCaWwWleGoeuIcaLXvasK9J5_cy-HtKrTA9wBErmTY3Idm-bsoEWLBSP_cA6OplQBwl-tqtRG7oHu2pwfMkkoWWfgvdqFLTVnb5bUDg-_hDMa5eyVAod58fN4p10QvLXhs1ovc6_ORtw84M_ja5JxWVGwjNFmYl0IudohJIBUzg0wDvJqUSV2QfAWm5rwxVtvfacBpYD7eabGh5wTj5rcRVwqHXkfXRJGR3tZ2c1MAN_FeHtMJ19bYQ',
   },
@@ -33,6 +35,7 @@ const articles = [
       'Learn how CRM systems can help small businesses improve efficiency, customer relations and grow faster.',
     date: 'Apr 28, 2024',
     readTime: '4 min read',
+    category: 'CRM',
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuAEh2MSxkEPwJffQ0A88Y-5YRplrC8sQTZRSuGwlH462JF8IhL1RvfOC_PBwCUSkC0ijAffeNtJ0__Aq0fZ2UziQ1-PhSnBUmoDpC__3BjNgoH2XCxpoZELhsriiRNe23WJoaanT2yhvs89D-QTZvvnIrt1zl38Zhf39Hqxa4UZqmjz2RjxON0o9k0UF_lI7YZP5CC8qV6oTp3ZopLWf2XoDEUxSqDPmNDDNuEosfydySuk2MLvMkRdYA',
   },
@@ -43,6 +46,7 @@ const articles = [
       'Understand how AI and automation can optimize operations and drive sustainable business growth.',
     date: 'Apr 20, 2024',
     readTime: '5 min read',
+    category: 'AI & Automation',
     image:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuD-Mno3HYqfssWJoAq_PiDPFXpMKRkGrGrBiVGk7CQiTk2HrgWIbg28zbcyajKM7vCd1-oKHj3WnRiUx6vFCiD5xtfD_ps2CQ58ds8lpjr2UnvAav_VB7EY6NaN3k7P7uYbCXJKd8ZUnS43qe8KhD3rxqsVTqULW1hTAcTzkkQsd81A8gWHiHFnzDyBEKgNkvkT6u--yw5KoRzG2LLA3LPWMn6NJvDBVwBVwT9PEClQbJqJrsJftxoAmA',
   },
@@ -86,6 +90,15 @@ function Blog() {
   const [activeCategory, setActiveCategory] = useState('All Articles');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const filteredArticles = articles.filter((article) => {
+    const matchesCategory =
+      activeCategory === 'All Articles' || article.category === activeCategory;
+    const matchesSearch = article.title
+      .toLowerCase()
+      .includes(searchQuery.trim().toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <main className="relative min-h-screen bg-[#faf8ff] tech-grid overflow-x-hidden">
       {/* Atmospheric Glows */}
@@ -128,7 +141,13 @@ function Blog() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Articles List */}
           <section className="lg:col-span-8 space-y-10">
-            {articles.map((article) => (
+            {filteredArticles.length === 0 && (
+              <p className="text-[#434654] text-base">
+                No articles found{activeCategory !== 'All Articles' ? ` in "${activeCategory}"` : ''}
+                {searchQuery ? ` matching "${searchQuery}"` : ''}.
+              </p>
+            )}
+            {filteredArticles.map((article) => (
               <article
                 key={article.id}
                 className="group flex flex-col md:flex-row gap-6 p-2 -m-2 rounded-2xl hover:bg-white transition-all duration-300 cursor-pointer"

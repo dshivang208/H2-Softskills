@@ -126,9 +126,6 @@ function Home() {
       {/* What We Do / Services Section */}
       <Services />
 
-      {/* Statistics Bar */}
-      <Stats />
-
       {/* Featured Projects */}
       <FeaturedProjects />
 
@@ -138,11 +135,14 @@ function Home() {
       {/* Our Process */}
       <OurProcess />
 
-      {/* Our Clients */}
-      <Clients />
-
       {/* Testimonials */}
       <Testimonials />
+
+      {/* Statistics Bar */}
+      <Stats />
+
+      {/* Our Clients */}
+      <Clients />
 
       {/* Call To Action Banner */}
       <CtaBanner />

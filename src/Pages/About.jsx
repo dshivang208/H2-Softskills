@@ -1,5 +1,5 @@
 import { Lightbulb, Users, ShieldCheck, Rocket, Smile, Star, Users2, Heart, Settings, Flag } from 'lucide-react';
-import logo from '../assets/logo.png';
+import logo1 from '../assets/logo1.png';
 
 const heroFeatures = [
   {
@@ -93,9 +93,9 @@ function About() {
               {/* Central Nucleus (Logo) */}
               <div className="relative z-20 w-56 h-auto about-animate-glow">
                 <img
-                  src={logo}
+                  src={logo1}
                   alt="H2 Softskills"
-                  className="w-full h-auto object-contain drop-shadow-[0_0_30px_rgba(0,255,136,0.4)]"
+                  className="w-16 sm:w-20 md:w-24 lg:w-32 h-auto object-contain opacity-50 drop-shadow-[0_0_20px_rgba(0,255,136,0.25)] translate-x-4 md:translate-x-8"
                 />
               </div>
 
