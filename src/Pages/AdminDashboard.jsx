@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Users,
   Send,
@@ -11,6 +11,7 @@ import {
   RefreshCw,
   Mail,
   History,
+  ArrowLeft,
 } from 'lucide-react';
 import { adminFetch, clearAdminToken } from '../lib/adminApi';
 
@@ -138,9 +139,13 @@ function AdminDashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
           <div>
-            <span className="font-['Hanken_Grotesk'] text-[#003594] text-sm leading-4 tracking-[0.3em] font-bold uppercase mb-2 block">
-              Admin
-            </span>
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#737685] hover:text-[#003594] transition-colors mb-3"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Admin Control Panel
+            </Link>
             <h1 className="font-['Hanken_Grotesk'] text-3xl md:text-4xl font-black tracking-tight text-[#131b2e]">
               Newsletter Dashboard
             </h1>

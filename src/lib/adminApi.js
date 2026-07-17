@@ -57,3 +57,39 @@ export async function adminFetch(path, options = {}) {
 
   return data;
 }
+
+/**
+ * fetch() wrapper for multipart/form-data uploads (e.g. the case study PDF
+ * uploader). Attaches the admin bearer token but — unlike adminFetch —
+ * deliberately does NOT set a Content-Type header, so the browser can set
+ * the correct multipart boundary itself. Throws an Error with a readable
+ * message on failure, and clears the stored token on a 401.
+ */
+export async function adminUpload(path, formData) {
+  const token = getAdminToken();
+
+  const res = await fetch(`${API_URL}${path}`, {
+    method: 'POST',
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+
+  let data = null;
+  try {
+    data = await res.json();
+  } catch {
+    // No JSON body — fall through with data === null.
+  }
+
+  if (res.status === 401) {
+    clearAdminToken();
+  }
+
+  if (!res.ok || !data?.ok) {
+    throw new Error(data?.error || 'Something went wrong. Please try again.');
+  }
+
+  return data;
+}

@@ -5,6 +5,9 @@ import rateLimit from 'express-rate-limit';
 import contactRouter from './src/routes/contact.js';
 import newsletterRouter from './src/routes/newsletter.js';
 import adminRouter from './src/routes/admin.js';
+import blogRouter from './src/routes/blog.js';
+import servicesRouter from './src/routes/services.js';
+import caseStudiesRouter from './src/routes/caseStudies.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +49,9 @@ const adminLoginLimiter = rateLimit({
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/contact', contactLimiter, contactRouter);
 app.use('/api/newsletter', newsletterLimiter, newsletterRouter);
+app.use('/api/blog', blogRouter);
+app.use('/api/services', servicesRouter);
+app.use('/api/case-studies', caseStudiesRouter);
 app.use('/api/admin/login', adminLoginLimiter);
 app.use('/api/admin', adminRouter);
 

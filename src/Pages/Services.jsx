@@ -1,8 +1,37 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { services, ServiceCard } from '../components/Services';
+import { services, ServiceCard, ICON_MAP } from '../components/Services';
+import { fetchPublishedServices } from '../lib/servicesApi';
 
 function Services() {
+  // Admin-added services (from Supabase) are kept separate from — and
+  // appended after — the built-in `services` array so none of the existing
+  // hardcoded cards on this page (or the Home page carousel) are ever
+  // removed or reordered.
+  const [adminServices, setAdminServices] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchPublishedServices().then((data) => {
+      if (cancelled) return;
+      const mapped = data.map((service) => ({
+        ...service,
+        image: service.image_url,
+        icon: ICON_MAP[service.icon] || ICON_MAP.Code2,
+        stats: Array.isArray(service.stats) ? service.stats : [],
+      }));
+      setAdminServices(mapped);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const allServices = [...services, ...adminServices];
+
   return (
     <main className="bg-[#f8fafc] pt-4 pb-16 md:pt-16">
       {/* Hero Section */}
@@ -28,7 +57,7 @@ function Services() {
       {/* Services Grid — same card design used on the Home page */}
       <section className="px-6 md:px-12 mb-16 md:mb-24 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {services.map((service) => (
+          {allServices.map((service) => (
             <ServiceCard key={service.id} service={service} fullWidth />
           ))}
         </div>

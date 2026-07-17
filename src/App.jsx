@@ -6,10 +6,16 @@ import Home from './Pages/Home';
 import About from './Pages/About';
 import Services from './Pages/Services';
 import Projects from './Pages/Projects';
+import CaseStudy from './Pages/CaseStudy';
 import Blog from './Pages/Blog';
+import BlogPost from './Pages/BlogPost';
 import Contact from './Pages/Contact';
 import AdminLogin from './Pages/AdminLogin';
+import AdminHome from './Pages/AdminHome';
 import AdminDashboard from './Pages/AdminDashboard';
+import AdminBlogs from './Pages/AdminBlogs';
+import AdminServices from './Pages/AdminServices';
+import AdminCaseStudies from './Pages/AdminCaseStudies';
 
 function App() {
   return (
@@ -21,14 +27,48 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:projectId/case-study" element={<CaseStudy />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route
             path="/admin"
             element={
               <ProtectedRoute>
+                <AdminHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/newsletter"
+            element={
+              <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/blogs"
+            element={
+              <ProtectedRoute>
+                <AdminBlogs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/services"
+            element={
+              <ProtectedRoute>
+                <AdminServices />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/case-studies"
+            element={
+              <ProtectedRoute>
+                <AdminCaseStudies />
               </ProtectedRoute>
             }
           />

@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { projects } from '../components/FeaturedProjects';
 
 const accentText = {
@@ -10,7 +12,10 @@ const categories = ['All', ...new Set(projects.map((project) => project.tag))];
 
 function ProjectCard({ project }) {
   return (
-    <article className="bg-white rounded-2xl overflow-hidden border border-[#e1e7ff] shadow-sm group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <Link
+      to={`/projects/${project.id}/case-study`}
+      className="bg-white rounded-2xl overflow-hidden border border-[#e1e7ff] shadow-sm group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg block"
+    >
       <div className="aspect-[16/10] bg-[#283044] overflow-hidden">
         <img
           alt={project.title}
@@ -27,9 +32,13 @@ function ProjectCard({ project }) {
         >
           {project.tag}
         </p>
-        <p className="text-[#434654] text-sm leading-relaxed line-clamp-2">{project.description}</p>
+        <p className="text-[#434654] text-sm leading-relaxed line-clamp-2 mb-2">{project.description}</p>
+        <div className="flex items-center gap-1.5 font-bold text-[10px] uppercase tracking-widest text-[#006c49] opacity-0 group-hover:opacity-100 transition-opacity">
+          <span>Explore Case Study</span>
+          <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
+        </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
