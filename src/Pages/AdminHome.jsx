@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Newspaper, Wrench, FolderKanban, LogOut, ChevronRight, ShieldCheck } from 'lucide-react';
+import { Mail, Newspaper, Wrench, FolderKanban, LogOut, ChevronRight, ShieldCheck, FileStack } from 'lucide-react';
 import { clearAdminToken } from '../lib/adminApi';
 
 // ---------------------------------------------------------------------------
@@ -39,6 +39,14 @@ const ADMIN_SECTIONS = [
     to: '/admin/case-studies',
     icon: FolderKanban,
     accent: '#7c3aed',
+  },
+  {
+    key: 'service-details',
+    title: 'Manage Service Details',
+    description: 'Fill in the capabilities, outcomes, deliverables, and FAQ shown on each service\u2019s detail page.',
+    to: '/admin/service-details',
+    icon: FileStack,
+    accent: '#0e7490',
   },
 ];
 

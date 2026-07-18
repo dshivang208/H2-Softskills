@@ -8,6 +8,7 @@ import adminRouter from './src/routes/admin.js';
 import blogRouter from './src/routes/blog.js';
 import servicesRouter from './src/routes/services.js';
 import caseStudiesRouter from './src/routes/caseStudies.js';
+import serviceDetailsRouter from './src/routes/serviceDetails.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,6 +53,7 @@ app.use('/api/newsletter', newsletterLimiter, newsletterRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/services', servicesRouter);
 app.use('/api/case-studies', caseStudiesRouter);
+app.use('/api/service-details', serviceDetailsRouter);
 app.use('/api/admin/login', adminLoginLimiter);
 app.use('/api/admin', adminRouter);
 

@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   ChevronLeft,
@@ -134,42 +135,47 @@ export const services = [
   },
 ];
 
-export function ServiceCard({ service, fullWidth = false }) {
+export function ServiceCard({ service, fullWidth = false, compact = false }) {
   const Icon = service.icon;
   return (
     <article
       className={fullWidth ? 'w-full' : 'flex-none w-[220px] md:w-[260px] snap-center'}
       data-purpose={`service-card-${service.id}`}
     >
-      <div className="relative h-[360px] rounded-3xl overflow-hidden bg-[#131b2e] shadow-xl service-card group">
+      <Link
+        to={`/services/${service.id}`}
+        className={`relative ${compact ? 'h-[260px]' : 'h-[360px]'} rounded-3xl overflow-hidden bg-[#131b2e] shadow-xl service-card group block`}
+      >
         <img
           alt={service.title}
           className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700"
           src={service.image}
         />
-        <div className="absolute inset-0 card-gradient-overlay flex flex-col justify-end p-4 text-white">
+        <div className={`absolute inset-0 card-gradient-overlay flex flex-col justify-end text-white ${compact ? 'p-3' : 'p-4'}`}>
           <div className="mb-auto">
-            <div className="bg-white/10 backdrop-blur-md w-8 h-8 flex items-center justify-center rounded-xl">
-              <Icon className="h-4 w-4" />
+            <div className={`bg-white/10 backdrop-blur-md flex items-center justify-center rounded-xl ${compact ? 'w-7 h-7' : 'w-8 h-8'}`}>
+              <Icon className={compact ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
             </div>
           </div>
 
           <div>
-            <h3 className="font-['Hanken_Grotesk'] text-lg font-semibold mb-1">{service.title}</h3>
+            <h3 className={`font-['Hanken_Grotesk'] font-semibold mb-1 ${compact ? 'text-base' : 'text-lg'}`}>{service.title}</h3>
             <div className="flex items-center gap-2 text-white/60 text-xs mb-2">
               <span>{service.tag}</span>
             </div>
-            <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
-              {service.description}
-            </p>
-            <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-3">
+            {!compact && (
+              <p className="text-white/80 text-sm leading-relaxed mb-4 line-clamp-2">
+                {service.description}
+              </p>
+            )}
+            <div className={`grid grid-cols-3 gap-2 border-t border-white/10 ${compact ? 'pt-2' : 'pt-3'}`}>
               {service.stats.map((stat) => (
                 <div key={stat.label}>
                   <span className="font-['JetBrains_Mono'] block text-[9px] font-medium uppercase tracking-wider text-white/40 mb-0.5">
                     {stat.label}
                   </span>
                   <span
-                    className="text-sm font-bold"
+                    className={compact ? 'text-xs font-bold' : 'text-sm font-bold'}
                     style={stat.highlight ? { color: stat.highlight } : undefined}
                   >
                     {stat.value}
@@ -179,17 +185,16 @@ export function ServiceCard({ service, fullWidth = false }) {
             </div>
           </div>
 
-          <div className="absolute bottom-4 right-4">
-            <button
-              type="button"
-              aria-label={`Learn more about ${service.title}`}
-              className="bg-white text-[#131b2e] w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:bg-[#004ac6] hover:text-white transition-colors"
+          <div className={`absolute ${compact ? 'bottom-3 right-3' : 'bottom-4 right-4'}`}>
+            <span
+              aria-hidden="true"
+              className={`bg-white text-[#131b2e] rounded-full flex items-center justify-center shadow-lg group-hover:bg-[#004ac6] group-hover:text-white transition-colors ${compact ? 'w-7 h-7' : 'w-8 h-8'}`}
             >
-              <ArrowRight className="h-4 w-4" />
-            </button>
+              <ArrowRight className={compact ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
+            </span>
           </div>
         </div>
-      </div>
+      </Link>
     </article>
   );
 }

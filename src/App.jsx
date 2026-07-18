@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './Pages/Home';
 import About from './Pages/About';
 import Services from './Pages/Services';
+import ServiceDetail from './Pages/ServiceDetail';
 import Projects from './Pages/Projects';
 import CaseStudy from './Pages/CaseStudy';
 import Blog from './Pages/Blog';
@@ -16,6 +17,7 @@ import AdminDashboard from './Pages/AdminDashboard';
 import AdminBlogs from './Pages/AdminBlogs';
 import AdminServices from './Pages/AdminServices';
 import AdminCaseStudies from './Pages/AdminCaseStudies';
+import AdminServiceDetails from './Pages/AdminServiceDetails';
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services/:serviceId" element={<ServiceDetail />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:projectId/case-study" element={<CaseStudy />} />
           <Route path="/blog" element={<Blog />} />
@@ -69,6 +72,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminCaseStudies />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/service-details"
+            element={
+              <ProtectedRoute>
+                <AdminServiceDetails />
               </ProtectedRoute>
             }
           />

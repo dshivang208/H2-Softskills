@@ -761,4 +761,140 @@ router.delete('/case-studies/:projectId/report', async (req, res) => {
   return res.status(200).json({ ok: true });
 });
 
+// ---------------------------------------------------------------------------
+// Service detail page management
+//
+// Each service detail row is linked to an EXISTING service card via
+// `service_id` (matching an id in the static `services` array in
+// src/components/Services.jsx, or the uuid id of an admin-added service
+// from the `services` table). This never creates, edits, or deletes a
+// service card itself — it only stores the extra content shown on that
+// service's /services/:serviceId detail page.
+// ---------------------------------------------------------------------------
+
+const ADMIN_SERVICE_DETAIL_COLUMNS =
+  'id, service_id, intro, capabilities, outcomes, deliverables, ideal_fit, faqs, status, created_at, updated_at';
+
+function normalizeStringList(rawList, maxItems) {
+  if (!Array.isArray(rawList)) return [];
+  return rawList
+    .map((item) => String(item || '').trim())
+    .filter(Boolean)
+    .slice(0, maxItems);
+}
+
+function normalizeFaqList(rawList, maxItems) {
+  if (!Array.isArray(rawList)) return [];
+  return rawList
+    .filter((item) => item && String(item.question || '').trim() && String(item.answer || '').trim())
+    .slice(0, maxItems)
+    .map((item) => ({
+      question: String(item.question).trim(),
+      answer: String(item.answer).trim(),
+    }));
+}
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/service-details  — every service detail row, any status
+// ---------------------------------------------------------------------------
+router.get('/service-details', async (_req, res) => {
+  const { data, error } = await supabase
+    .from('service_details')
+    .select(ADMIN_SERVICE_DETAIL_COLUMNS)
+    .order('updated_at', { ascending: false });
+
+  if (error) {
+    console.error('[admin] Fetch service details failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load service details.' });
+  }
+
+  return res.status(200).json({ ok: true, serviceDetails: data });
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/service-details/:serviceId  — single detail row for the edit form
+// ---------------------------------------------------------------------------
+router.get('/service-details/:serviceId', async (req, res) => {
+  const { serviceId } = req.params;
+
+  const { data, error } = await supabase
+    .from('service_details')
+    .select(ADMIN_SERVICE_DETAIL_COLUMNS)
+    .eq('service_id', serviceId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Fetch service detail failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load this service.' });
+  }
+
+  // Not found is a normal state here (detail page not written yet) — the
+  // admin form just starts blank, so return 200 with a null serviceDetail
+  // instead of a 404.
+  return res.status(200).json({ ok: true, serviceDetail: data || null });
+});
+
+// ---------------------------------------------------------------------------
+// PUT /api/admin/service-details/:serviceId  — create or update (upsert) the
+// detail-page content for an existing service card.
+// ---------------------------------------------------------------------------
+router.put('/service-details/:serviceId', async (req, res) => {
+  const { serviceId } = req.params;
+
+  const intro = String(req.body?.intro ?? '').trim();
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+  const capabilities = normalizeStringList(req.body?.capabilities, 8);
+  const outcomes = normalizeStringList(req.body?.outcomes, 6);
+  const deliverables = normalizeStringList(req.body?.deliverables, 8);
+  const idealFit = normalizeStringList(req.body?.ideal_fit, 6);
+  const faqs = normalizeFaqList(req.body?.faqs, 8);
+
+  if (!serviceId) {
+    return res.status(400).json({ ok: false, error: 'A service is required.' });
+  }
+
+  const { data, error } = await supabase
+    .from('service_details')
+    .upsert(
+      {
+        service_id: serviceId,
+        intro,
+        capabilities,
+        outcomes,
+        deliverables,
+        ideal_fit: idealFit,
+        faqs,
+        status,
+      },
+      { onConflict: 'service_id' }
+    )
+    .select(ADMIN_SERVICE_DETAIL_COLUMNS)
+    .single();
+
+  if (error) {
+    console.error('[admin] Save service detail failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not save this service detail page.' });
+  }
+
+  return res.status(200).json({ ok: true, serviceDetail: data });
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /api/admin/service-details/:serviceId  — remove the detail content
+// (the service card itself is unaffected; it just goes back to having no
+// published detail page).
+// ---------------------------------------------------------------------------
+router.delete('/service-details/:serviceId', async (req, res) => {
+  const { serviceId } = req.params;
+
+  const { error } = await supabase.from('service_details').delete().eq('service_id', serviceId);
+
+  if (error) {
+    console.error('[admin] Delete service detail failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not delete this service detail page.' });
+  }
+
+  return res.status(200).json({ ok: true });
+});
+
 export default router;

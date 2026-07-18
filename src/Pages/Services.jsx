@@ -58,7 +58,7 @@ function Services() {
       <section className="px-6 md:px-12 mb-16 md:mb-24 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {allServices.map((service) => (
-            <ServiceCard key={service.id} service={service} fullWidth />
+            <ServiceCard key={service.id} service={service} fullWidth compact />
           ))}
         </div>
       </section>
