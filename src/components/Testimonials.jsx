@@ -1,50 +1,18 @@
-const testimonials = [
-  {
-    id: 'arjun-mehta',
-    name: 'Arjun Mehta',
-    role: 'CEO, Bright Solutions',
-    avatar:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCWtURC5J9gM714t43CwpPTXHgfAXBhjYXZ0wnq1vaC3PlVzSzKURahaECG3aYONSh5jV9GOXGbcrMcM9qfVH1wy4gjRS-XV9v_sAEERv9BlpRR8DE-L46gtPUomVvFA3Bk1lE5ZfwNJecQn8dZwZuSVSZP4v5PAKw6GIcfyKqsvAxNVyxh4nmD5w3XVNZxZp9YQvL05iJSmDPGLb9eT3nkYElUSXcHghwbtZfYOO_eqe5AsvR58w_Tlg',
-    quote:
-      'H2 Softskills transformed our digital presence with a robust and scalable solution. Their team is highly skilled, responsive, and always focused on delivering real value.',
-    companyBadge: (
-      <span className="flex items-center text-blue-800 font-bold italic text-sm">
-        <span className="mr-1 text-xl">✦</span> Bright
-        <span className="font-normal block text-[10px] uppercase tracking-tighter ml-1">Solutions</span>
-      </span>
-    ),
-  },
-  {
-    id: 'priya-sharma',
-    name: 'Priya Sharma',
-    role: 'Product Manager, Healthio',
-    avatar:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCB3QgtlWINYwwqueybdKK_CLnuDS1Hu4_x5mvEOeNisKPcAPkZDBcXwEiH-YOEhNgVdM3TpySTu6z2CeAcdMd10i1PWVD4KuqtkhnnvdGngNH2w9MrFYI7rZQzK2vTO7YrdquM6SBVl_c6oPzmyhLfkkBExECUaEc-i7RLfG7FQQBAD60fzGQQgU5C6MrvlJyX8naF-5FV-oId9q_eqVPN_gw76e31kP_58XQ7O-EdkSzPCExw8U-F9w',
-    quote:
-      'The H2 Softskills team delivered our mobile app on time and exceeded our expectations in both quality and performance. A truly reliable technology partner.',
-    companyBadge: (
-      <span className="flex items-center text-blue-500 font-bold text-lg">
-        <span className="text-2xl mr-1">+</span> Healthio
-      </span>
-    ),
-  },
-  {
-    id: 'vikram-reddy',
-    name: 'Vikram Reddy',
-    role: 'CTO, Finova',
-    avatar:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBLJmT4ftAXSgbqGi1aG7EHzFAH4Rfda6VSE9N5_0sr9zkuMD2vzJjAbMWCHxqg1bD4aOQ3fGCJmHfH6dh7JhctLjFUFoElbwdoz8VwApjkw-lEUX9IqVL6moe2AuI4GA7tYnPr_2tS2JJt-R7Wbr7wv14SAMwWHR44ATR8EkZUZXgSbd-MkXTw0MXhGB70d4KK1uqkt3EGcHxKrk3Bub6z1tcA-TqlCjbMwvfbvqP9TCEOA0zmV5oNsw',
-    quote:
-      'From concept to deployment, H2 Softskills has been exceptional. Their innovative approach and attention to detail helped us achieve our business goals faster.',
-    companyBadge: (
-      <span className="flex items-center text-blue-600 font-bold text-lg">
-        <span className="bg-blue-600 text-white rounded p-1 text-xs mr-1">F</span> Finova
-      </span>
-    ),
-  },
-];
+import { useEffect, useState } from 'react';
+import { fetchPublishedTestimonials } from '../lib/testimonialApi';
+
+// Pulls the company name out of a role string like "CEO, Bright Solutions"
+// so the small badge in the corner has something to show, without needing
+// a separate field in the database.
+function companyFromRole(role) {
+  if (!role) return null;
+  const parts = role.split(',');
+  return parts.length > 1 ? parts[parts.length - 1].trim() : null;
+}
 
 function TestimonialCard({ testimonial }) {
+  const company = companyFromRole(testimonial.role);
+
   return (
     <div
       className="bg-white rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow duration-300 p-6"
@@ -65,11 +33,13 @@ function TestimonialCard({ testimonial }) {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1">
             <div className="flex text-[#006c49] text-sm">
-              {'★★★★★'.split('').map((star, i) => (
-                <span key={i}>{star}</span>
+              {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
+                <span key={i}>★</span>
               ))}
             </div>
-            <span className="text-xs font-bold text-slate-900 ml-1">5.0</span>
+            <span className="text-xs font-bold text-slate-900 ml-1">
+              {(testimonial.rating || 5).toFixed(1)}
+            </span>
           </div>
           <div className="flex items-center gap-1 text-[#006c49]">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -86,18 +56,26 @@ function TestimonialCard({ testimonial }) {
         {/* Profile info + company badge */}
         <div className="flex items-center justify-between border-t border-gray-100 pt-4">
           <div className="flex items-center gap-3">
-            <img
-              alt={testimonial.name}
-              src={testimonial.avatar}
-              className="w-12 h-12 rounded-full object-cover"
-              loading="lazy"
-            />
+            {testimonial.avatar_url ? (
+              <img
+                alt={testimonial.name}
+                src={testimonial.avatar_url}
+                className="w-12 h-12 rounded-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-[#e1e7ff] text-[#004ac6] flex items-center justify-center font-bold text-sm flex-shrink-0">
+                {testimonial.name?.[0]?.toUpperCase()}
+              </div>
+            )}
             <div>
               <h4 className="font-bold text-slate-900 text-sm">{testimonial.name}</h4>
               <p className="text-gray-500 text-xs">{testimonial.role}</p>
             </div>
           </div>
-          {testimonial.companyBadge}
+          {company && (
+            <span className="text-blue-700 font-bold italic text-sm text-right">{company}</span>
+          )}
         </div>
       </div>
     </div>
@@ -105,6 +83,34 @@ function TestimonialCard({ testimonial }) {
 }
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let ignore = false;
+    fetchPublishedTestimonials()
+      .then((data) => {
+        if (!ignore) setTestimonials(data.testimonials || []);
+      })
+      .catch(() => {
+        // Fails silently — if the API is briefly down the section just
+        // doesn't render rather than showing an error.
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  // Nothing published yet (or still loading with nothing to show) — render
+  // nothing at all, so the section simply doesn't exist until the admin
+  // adds a testimonial.
+  if (loading || testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-16 px-6 bg-[#FAF9F6]" data-purpose="testimonials-section">
       <div className="max-w-7xl mx-auto">

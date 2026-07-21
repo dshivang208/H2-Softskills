@@ -913,9 +913,9 @@ router.delete('/service-details/:serviceId', async (req, res) => {
 // ---------------------------------------------------------------------------
 // Client testimonials management
 //
-// Feeds the ADDITIONAL "What Our Clients Say" section on the Home page.
-// Fully separate from the 3 hardcoded cards in src/components/Testimonials.jsx
-// — this never touches those.
+// Feeds the "Testimonials" section on the Home page (src/components/
+// Testimonials.jsx), which is now fully database-driven — every card shown
+// there is a row in this table and is editable from the admin panel.
 // ---------------------------------------------------------------------------
 
 const ADMIN_TESTIMONIAL_COLUMNS =
@@ -1076,10 +1076,9 @@ router.delete('/testimonials/:id', async (req, res) => {
 // ---------------------------------------------------------------------------
 // Client logos management
 //
-// Adds EXTRA logos to the "Our Clients" marquee on the Home page, on top of
-// the hardcoded ones in src/components/Clients.jsx (Polygon, Binance, AWS,
-// etc). This never touches those — the admin can only add/edit/remove the
-// logos stored here.
+// Feeds the "Our Clients" marquee on the Home page (src/components/
+// Clients.jsx), which is now fully database-driven — every logo shown
+// there is a row in this table and is editable from the admin panel.
 // ---------------------------------------------------------------------------
 
 const ADMIN_CLIENT_LOGO_COLUMNS =

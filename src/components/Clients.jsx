@@ -1,20 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchPublishedClientLogos } from '../lib/clientLogoApi';
 
-// Logos for the auto-scrolling client marquee.
-const clientLogos = [
-  { name: 'Polygon', src: 'https://cdn.worldvectorlogo.com/logos/polygon-token.svg' },
-  { name: 'Binance', src: 'https://cdn.worldvectorlogo.com/logos/binance-coin-bnb.svg' },
-  { name: 'AWS', src: 'https://cdn.worldvectorlogo.com/logos/aws-2.svg' },
-  { name: 'Solana', src: 'https://cdn.worldvectorlogo.com/logos/solana-sol.svg' },
-  { name: 'Microsoft', src: 'https://cdn.worldvectorlogo.com/logos/microsoft-5.svg' },
-  { name: 'Google Cloud', src: 'https://cdn.worldvectorlogo.com/logos/google-cloud-1.svg' },
-  { name: 'Stripe', src: 'https://cdn.worldvectorlogo.com/logos/stripe-4.svg' },
-  { name: 'Notion', src: 'https://cdn.worldvectorlogo.com/logos/notion-2.svg' },
-  { name: 'Slack', src: 'https://cdn.worldvectorlogo.com/logos/slack-new-logo.svg' },
-  { name: 'HubSpot', src: 'https://cdn.worldvectorlogo.com/logos/hubspot-2.svg' },
-];
-
 function LogoCard({ logo }) {
   const content = (
     <img
@@ -50,33 +36,40 @@ function LogoCard({ logo }) {
 }
 
 export default function Clients() {
-  const [adminLogos, setAdminLogos] = useState([]);
+  const [logos, setLogos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let ignore = false;
     fetchPublishedClientLogos()
       .then((data) => {
         if (!ignore) {
-          setAdminLogos(
+          setLogos(
             (data.logos || []).map((l) => ({ name: l.name, src: l.logo_url, href: l.website_url }))
           );
         }
       })
       .catch(() => {
-        // Fails silently — this is additive; if it's briefly down, the
-        // marquee just shows the original hardcoded logos as normal.
+        // Fails silently — if the API is briefly down the marquee just
+        // doesn't render rather than showing an error.
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false);
       });
     return () => {
       ignore = true;
     };
   }, []);
 
-  // Admin-added logos are appended after the original hardcoded ones — the
-  // originals never move or disappear, the admin can only add to / remove
-  // from the extra set.
-  const allLogos = [...clientLogos, ...adminLogos];
-  // Duplicate the combined list so the marquee CSS animation loops seamlessly from 0% to -50%.
-  const marqueeLogos = [...allLogos, ...allLogos];
+  // Nothing published yet (or still loading with nothing to show) — render
+  // nothing at all, so the section simply doesn't exist until the admin
+  // adds a logo.
+  if (loading || logos.length === 0) {
+    return null;
+  }
+
+  // Duplicate the list so the marquee CSS animation loops seamlessly from 0% to -50%.
+  const marqueeLogos = [...logos, ...logos];
 
   return (
     <section className="py-10 px-6 bg-white" data-purpose="our-clients-section">

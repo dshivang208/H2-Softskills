@@ -1,11 +1,11 @@
 import Services from '../components/Services';
 import Stats from '../components/Stats';
+import VideoShowcase from '../components/VideoShowcase';
 import FeaturedProjects from '../components/FeaturedProjects';
 import TechStack from '../components/TechStack';
 import OurProcess from '../components/OurProcess';
 import Clients from '../components/Clients';
 import Testimonials from '../components/Testimonials';
-import CommunityTestimonials from '../components/CommunityTestimonials';
 import CtaBanner from '../components/CtaBanner';
 import heroGraphic from '../assets/hero-graphic.png';
 import { ArrowRight, Play } from 'lucide-react';
@@ -127,6 +127,9 @@ function Home() {
       {/* What We Do / Services Section */}
       <Services />
 
+      {/* Promo Video Showcase */}
+      <VideoShowcase />
+
       {/* Featured Projects */}
       <FeaturedProjects />
 
@@ -136,11 +139,8 @@ function Home() {
       {/* Our Process */}
       <OurProcess />
 
-      {/* Testimonials */}
+      {/* Testimonials (admin-managed) */}
       <Testimonials />
-
-      {/* What Our Clients Say (admin-managed, additional) */}
-      <CommunityTestimonials />
 
       {/* Statistics Bar */}
       <Stats />
