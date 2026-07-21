@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Newspaper, Wrench, FolderKanban, LogOut, ChevronRight, ShieldCheck, FileStack } from 'lucide-react';
+import { Mail, Newspaper, Wrench, FolderKanban, LogOut, ChevronRight, ShieldCheck, FileStack, MessageSquareQuote, Building2 } from 'lucide-react';
 import { clearAdminToken } from '../lib/adminApi';
 
 // ---------------------------------------------------------------------------
@@ -47,6 +47,22 @@ const ADMIN_SECTIONS = [
     to: '/admin/service-details',
     icon: FileStack,
     accent: '#0e7490',
+  },
+  {
+    key: 'testimonials',
+    title: 'Manage Testimonials',
+    description: 'Add, edit, reorder, and publish client testimonials shown in an additional section on the Home page.',
+    to: '/admin/testimonials',
+    icon: MessageSquareQuote,
+    accent: '#be185d',
+  },
+  {
+    key: 'client-logos',
+    title: 'Manage Client Logos',
+    description: 'Add or remove extra logos in the scrolling \u201cOur Clients\u201d marquee \u2014 the existing logos stay untouched.',
+    to: '/admin/client-logos',
+    icon: Building2,
+    accent: '#166534',
   },
 ];
 

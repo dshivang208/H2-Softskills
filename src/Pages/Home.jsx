@@ -5,6 +5,7 @@ import TechStack from '../components/TechStack';
 import OurProcess from '../components/OurProcess';
 import Clients from '../components/Clients';
 import Testimonials from '../components/Testimonials';
+import CommunityTestimonials from '../components/CommunityTestimonials';
 import CtaBanner from '../components/CtaBanner';
 import heroGraphic from '../assets/hero-graphic.png';
 import { ArrowRight, Play } from 'lucide-react';
@@ -137,6 +138,9 @@ function Home() {
 
       {/* Testimonials */}
       <Testimonials />
+
+      {/* What Our Clients Say (admin-managed, additional) */}
+      <CommunityTestimonials />
 
       {/* Statistics Bar */}
       <Stats />

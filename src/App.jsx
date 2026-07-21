@@ -18,6 +18,8 @@ import AdminBlogs from './Pages/AdminBlogs';
 import AdminServices from './Pages/AdminServices';
 import AdminCaseStudies from './Pages/AdminCaseStudies';
 import AdminServiceDetails from './Pages/AdminServiceDetails';
+import AdminTestimonials from './Pages/AdminTestimonials';
+import AdminClientLogos from './Pages/AdminClientLogos';
 
 function App() {
   return (
@@ -80,6 +82,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminServiceDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/testimonials"
+            element={
+              <ProtectedRoute>
+                <AdminTestimonials />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/client-logos"
+            element={
+              <ProtectedRoute>
+                <AdminClientLogos />
               </ProtectedRoute>
             }
           />

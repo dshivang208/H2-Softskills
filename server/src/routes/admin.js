@@ -693,44 +693,57 @@ router.post('/case-studies/:projectId/report', (req, res) => {
       return res.status(400).json({ ok: false, error: 'No PDF file was uploaded.' });
     }
 
-    const path = `${projectId}.pdf`;
+    // Everything below can throw unexpectedly (a Supabase network hiccup,
+    // a malformed response, etc). Without this try/catch, an error here
+    // becomes an unhandled rejection — which can crash the whole Node
+    // process on some Node versions, killing every other in-flight
+    // request too (this is what "Failed to fetch" on an otherwise-correct
+    // upload usually means).
+    try {
+      const path = `${projectId}.pdf`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('case-study-reports')
-      .upload(path, req.file.buffer, {
-        contentType: 'application/pdf',
-        upsert: true,
-      });
+      const { error: uploadError } = await supabase.storage
+        .from('case-study-reports')
+        .upload(path, req.file.buffer, {
+          contentType: 'application/pdf',
+          upsert: true,
+        });
 
-    if (uploadError) {
-      console.error('[admin] Upload case study report failed:', uploadError.message);
-      return res.status(500).json({ ok: false, error: 'Could not upload this PDF.' });
+      if (uploadError) {
+        console.error('[admin] Upload case study report failed:', uploadError.message);
+        return res.status(500).json({ ok: false, error: 'Could not upload this PDF.' });
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('case-study-reports')
+        .getPublicUrl(path);
+
+      // Bust any cached copy of the previous file at the same URL — public
+      // storage URLs are otherwise indistinguishable across re-uploads.
+      const url = `${publicUrlData.publicUrl}?v=${Date.now()}`;
+
+      // Keep the case_studies row in sync so the URL shows up next time the
+      // admin form loads, and so the public case-study page can use it too.
+      const { error: dbError } = await supabase
+        .from('case_studies')
+        .update({ pdf_url: url })
+        .eq('project_id', projectId);
+
+      if (dbError) {
+        // The file itself uploaded fine — don't fail the request just
+        // because there's no case_studies row yet (e.g. it hasn't been
+        // saved once already). The admin form will still store the URL on
+        // its next Save/Publish.
+        console.warn('[admin] Uploaded report but could not update case_studies row:', dbError.message);
+      }
+
+      return res.status(200).json({ ok: true, url });
+    } catch (err) {
+      console.error('[admin] Unexpected error uploading case study report:', err);
+      if (!res.headersSent) {
+        return res.status(500).json({ ok: false, error: 'Unexpected server error while uploading the PDF. Please try again.' });
+      }
     }
-
-    const { data: publicUrlData } = supabase.storage
-      .from('case-study-reports')
-      .getPublicUrl(path);
-
-    // Bust any cached copy of the previous file at the same URL — public
-    // storage URLs are otherwise indistinguishable across re-uploads.
-    const url = `${publicUrlData.publicUrl}?v=${Date.now()}`;
-
-    // Keep the case_studies row in sync so the URL shows up next time the
-    // admin form loads, and so the public case-study page can use it too.
-    const { error: dbError } = await supabase
-      .from('case_studies')
-      .update({ pdf_url: url })
-      .eq('project_id', projectId);
-
-    if (dbError) {
-      // The file itself uploaded fine — don't fail the request just
-      // because there's no case_studies row yet (e.g. it hasn't been
-      // saved once already). The admin form will still store the URL on
-      // its next Save/Publish.
-      console.warn('[admin] Uploaded report but could not update case_studies row:', dbError.message);
-    }
-
-    return res.status(200).json({ ok: true, url });
   });
 });
 
@@ -892,6 +905,314 @@ router.delete('/service-details/:serviceId', async (req, res) => {
   if (error) {
     console.error('[admin] Delete service detail failed:', error.message);
     return res.status(500).json({ ok: false, error: 'Could not delete this service detail page.' });
+  }
+
+  return res.status(200).json({ ok: true });
+});
+
+// ---------------------------------------------------------------------------
+// Client testimonials management
+//
+// Feeds the ADDITIONAL "What Our Clients Say" section on the Home page.
+// Fully separate from the 3 hardcoded cards in src/components/Testimonials.jsx
+// — this never touches those.
+// ---------------------------------------------------------------------------
+
+const ADMIN_TESTIMONIAL_COLUMNS =
+  'id, name, role, quote, avatar_url, rating, display_order, status, created_at, updated_at';
+
+function normalizeRating(raw) {
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return 5;
+  return Math.min(5, Math.max(1, Math.round(n)));
+}
+
+function normalizeOrder(raw) {
+  const n = Number(raw);
+  return Number.isFinite(n) ? Math.round(n) : 0;
+}
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/testimonials  — every testimonial, any status
+// ---------------------------------------------------------------------------
+router.get('/testimonials', async (_req, res) => {
+  const { data, error } = await supabase
+    .from('client_testimonials')
+    .select(ADMIN_TESTIMONIAL_COLUMNS)
+    .order('display_order', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[admin] Fetch testimonials failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load testimonials.' });
+  }
+
+  return res.status(200).json({ ok: true, testimonials: data });
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/testimonials/:id  — single testimonial for the edit form
+// ---------------------------------------------------------------------------
+router.get('/testimonials/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const { data, error } = await supabase
+    .from('client_testimonials')
+    .select(ADMIN_TESTIMONIAL_COLUMNS)
+    .eq('id', id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Fetch testimonial failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load this testimonial.' });
+  }
+
+  if (!data) {
+    return res.status(404).json({ ok: false, error: 'Testimonial not found.' });
+  }
+
+  return res.status(200).json({ ok: true, testimonial: data });
+});
+
+// ---------------------------------------------------------------------------
+// POST /api/admin/testimonials  — create a testimonial
+// ---------------------------------------------------------------------------
+router.post('/testimonials', async (req, res) => {
+  const name = String(req.body?.name ?? '').trim();
+  const role = String(req.body?.role ?? '').trim();
+  const quote = String(req.body?.quote ?? '').trim();
+  const avatarUrl = String(req.body?.avatar_url ?? '').trim() || null;
+  const rating = normalizeRating(req.body?.rating);
+  const displayOrder = normalizeOrder(req.body?.display_order);
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+
+  if (!name || !quote) {
+    return res.status(400).json({ ok: false, error: 'Name and quote are required.' });
+  }
+
+  const { data, error } = await supabase
+    .from('client_testimonials')
+    .insert({
+      name,
+      role,
+      quote,
+      avatar_url: avatarUrl,
+      rating,
+      display_order: displayOrder,
+      status,
+    })
+    .select(ADMIN_TESTIMONIAL_COLUMNS)
+    .single();
+
+  if (error) {
+    console.error('[admin] Create testimonial failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not create this testimonial.' });
+  }
+
+  return res.status(201).json({ ok: true, testimonial: data });
+});
+
+// ---------------------------------------------------------------------------
+// PUT /api/admin/testimonials/:id  — update a testimonial
+// ---------------------------------------------------------------------------
+router.put('/testimonials/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const name = String(req.body?.name ?? '').trim();
+  const role = String(req.body?.role ?? '').trim();
+  const quote = String(req.body?.quote ?? '').trim();
+  const avatarUrl = String(req.body?.avatar_url ?? '').trim() || null;
+  const rating = normalizeRating(req.body?.rating);
+  const displayOrder = normalizeOrder(req.body?.display_order);
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+
+  if (!name || !quote) {
+    return res.status(400).json({ ok: false, error: 'Name and quote are required.' });
+  }
+
+  const { data, error } = await supabase
+    .from('client_testimonials')
+    .update({
+      name,
+      role,
+      quote,
+      avatar_url: avatarUrl,
+      rating,
+      display_order: displayOrder,
+      status,
+    })
+    .eq('id', id)
+    .select(ADMIN_TESTIMONIAL_COLUMNS)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Update testimonial failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not update this testimonial.' });
+  }
+
+  if (!data) {
+    return res.status(404).json({ ok: false, error: 'Testimonial not found.' });
+  }
+
+  return res.status(200).json({ ok: true, testimonial: data });
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /api/admin/testimonials/:id  — remove a testimonial
+// ---------------------------------------------------------------------------
+router.delete('/testimonials/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const { error } = await supabase.from('client_testimonials').delete().eq('id', id);
+
+  if (error) {
+    console.error('[admin] Delete testimonial failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not delete this testimonial.' });
+  }
+
+  return res.status(200).json({ ok: true });
+});
+
+// ---------------------------------------------------------------------------
+// Client logos management
+//
+// Adds EXTRA logos to the "Our Clients" marquee on the Home page, on top of
+// the hardcoded ones in src/components/Clients.jsx (Polygon, Binance, AWS,
+// etc). This never touches those — the admin can only add/edit/remove the
+// logos stored here.
+// ---------------------------------------------------------------------------
+
+const ADMIN_CLIENT_LOGO_COLUMNS =
+  'id, name, logo_url, website_url, display_order, status, created_at, updated_at';
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/client-logos  — every logo, any status
+// ---------------------------------------------------------------------------
+router.get('/client-logos', async (_req, res) => {
+  const { data, error } = await supabase
+    .from('client_logos')
+    .select(ADMIN_CLIENT_LOGO_COLUMNS)
+    .order('display_order', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[admin] Fetch client logos failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load client logos.' });
+  }
+
+  return res.status(200).json({ ok: true, logos: data });
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/client-logos/:id  — single logo for the edit form
+// ---------------------------------------------------------------------------
+router.get('/client-logos/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const { data, error } = await supabase
+    .from('client_logos')
+    .select(ADMIN_CLIENT_LOGO_COLUMNS)
+    .eq('id', id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Fetch client logo failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load this logo.' });
+  }
+
+  if (!data) {
+    return res.status(404).json({ ok: false, error: 'Logo not found.' });
+  }
+
+  return res.status(200).json({ ok: true, logo: data });
+});
+
+// ---------------------------------------------------------------------------
+// POST /api/admin/client-logos  — add a logo
+// ---------------------------------------------------------------------------
+router.post('/client-logos', async (req, res) => {
+  const name = String(req.body?.name ?? '').trim();
+  const logoUrl = String(req.body?.logo_url ?? '').trim();
+  const websiteUrl = String(req.body?.website_url ?? '').trim() || null;
+  const displayOrder = normalizeOrder(req.body?.display_order);
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+
+  if (!name || !logoUrl) {
+    return res.status(400).json({ ok: false, error: 'Name and logo URL are required.' });
+  }
+
+  const { data, error } = await supabase
+    .from('client_logos')
+    .insert({
+      name,
+      logo_url: logoUrl,
+      website_url: websiteUrl,
+      display_order: displayOrder,
+      status,
+    })
+    .select(ADMIN_CLIENT_LOGO_COLUMNS)
+    .single();
+
+  if (error) {
+    console.error('[admin] Create client logo failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not add this logo.' });
+  }
+
+  return res.status(201).json({ ok: true, logo: data });
+});
+
+// ---------------------------------------------------------------------------
+// PUT /api/admin/client-logos/:id  — update a logo
+// ---------------------------------------------------------------------------
+router.put('/client-logos/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const name = String(req.body?.name ?? '').trim();
+  const logoUrl = String(req.body?.logo_url ?? '').trim();
+  const websiteUrl = String(req.body?.website_url ?? '').trim() || null;
+  const displayOrder = normalizeOrder(req.body?.display_order);
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+
+  if (!name || !logoUrl) {
+    return res.status(400).json({ ok: false, error: 'Name and logo URL are required.' });
+  }
+
+  const { data, error } = await supabase
+    .from('client_logos')
+    .update({
+      name,
+      logo_url: logoUrl,
+      website_url: websiteUrl,
+      display_order: displayOrder,
+      status,
+    })
+    .eq('id', id)
+    .select(ADMIN_CLIENT_LOGO_COLUMNS)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Update client logo failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not update this logo.' });
+  }
+
+  if (!data) {
+    return res.status(404).json({ ok: false, error: 'Logo not found.' });
+  }
+
+  return res.status(200).json({ ok: true, logo: data });
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /api/admin/client-logos/:id  — remove a logo
+// ---------------------------------------------------------------------------
+router.delete('/client-logos/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const { error } = await supabase.from('client_logos').delete().eq('id', id);
+
+  if (error) {
+    console.error('[admin] Delete client logo failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not delete this logo.' });
   }
 
   return res.status(200).json({ ok: true });
