@@ -74,17 +74,17 @@ function CaseStudy() {
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />
 
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14">
         <Link
           to="/projects"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[#003594] hover:text-[#002a72] mb-10 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#003594] hover:text-[#002a72] mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Projects
         </Link>
 
         {/* Hero */}
-        <header className="mb-12">
+        <header className="mb-8">
           <p
             className={`text-xs font-semibold mb-3 uppercase tracking-[0.25em] ${accentText[project.accent]}`}
           >
@@ -98,7 +98,7 @@ function CaseStudy() {
           </p>
         </header>
 
-        <div className="w-full h-64 md:h-96 overflow-hidden rounded-2xl bg-[#eaedff] mb-12">
+        <div className="w-full h-40 sm:h-52 md:h-64 overflow-hidden rounded-xl bg-[#eaedff] mb-8">
           <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
         </div>
 
@@ -119,7 +119,7 @@ function CaseStudy() {
         )}
 
         {!loading && hasContent && (
-          <div className="space-y-14">
+          <div className="space-y-10">
             {/* Key facts */}
             {(caseStudy.client_type || caseStudy.region || caseStudy.tech_stack) && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -219,11 +219,11 @@ function CaseStudy() {
         )}
 
         {/* Bottom CTA card — present on every project's case study page */}
-        <div className="mt-16 p-8 md:p-10 rounded-2xl bg-[#004ac6] relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20" />
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="mt-10 p-6 md:p-8 rounded-2xl bg-[#004ac6] relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
             <div>
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">
                 Want a similar workflow for your business?
               </h3>
               <p className="text-[#dbe1ff] text-sm max-w-md">
@@ -234,7 +234,7 @@ function CaseStudy() {
             <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#003594] font-bold rounded-xl hover:bg-[#eaedff] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-[#003594] font-bold text-sm rounded-xl hover:bg-[#eaedff] transition-colors"
               >
                 <PhoneCall className="w-4 h-4" />
                 Schedule a Call
@@ -244,7 +244,7 @@ function CaseStudy() {
                   href={caseStudy.pdf_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 border border-white/25 text-white font-bold rounded-xl hover:bg-white/20 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/10 border border-white/25 text-white font-bold text-sm rounded-xl hover:bg-white/20 transition-colors"
                 >
                   <FileDown className="w-4 h-4" />
                   Download Case Study Report
@@ -252,7 +252,7 @@ function CaseStudy() {
               ) : (
                 <span
                   title="Report not available yet"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/10 border border-white/15 text-white/60 font-bold rounded-xl cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/10 border border-white/15 text-white/60 font-bold text-sm rounded-xl cursor-not-allowed"
                 >
                   <FileDown className="w-4 h-4" />
                   Report Coming Soon
@@ -264,7 +264,7 @@ function CaseStudy() {
 
         <Link
           to="/projects"
-          className="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-[#003594] hover:text-[#002a72] transition-colors"
+          className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[#003594] hover:text-[#002a72] transition-colors"
         >
           Explore more projects
           <ArrowRight className="w-4 h-4" />
