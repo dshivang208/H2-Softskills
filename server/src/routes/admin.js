@@ -23,6 +23,27 @@ const reportUpload = multer({
   },
 });
 
+// Used by the project image upload route below (and reusable for any
+// future image upload). Files are kept in memory and streamed straight to
+// Supabase Storage.
+const IMAGE_MIME_EXTENSIONS = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+};
+
+const imageUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB, matches the bucket's file_size_limit
+  fileFilter: (_req, file, cb) => {
+    if (!IMAGE_MIME_EXTENSIONS[file.mimetype]) {
+      return cb(new Error('Only JPG, PNG, WEBP, or GIF images are allowed.'));
+    }
+    return cb(null, true);
+  },
+});
+
 // ---------------------------------------------------------------------------
 // POST /api/admin/login  (public)
 // ---------------------------------------------------------------------------
@@ -528,11 +549,261 @@ router.delete('/services/:id', async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// Project management
+//
+// Feeds the "Featured Projects" carousel on the Home page and the /projects
+// grid page (src/components/FeaturedProjects.jsx, src/Pages/Projects.jsx),
+// which are now fully database-driven — every card shown there is a row in
+// this table, including its image, and is editable from the admin panel.
+// ---------------------------------------------------------------------------
+
+const ADMIN_PROJECT_COLUMNS =
+  'id, title, tag, accent, description, image_url, display_order, status, created_at, updated_at';
+
+function projectSlugify(text) {
+  return String(text || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+}
+
+// Appends -2, -3, ... to a slug until it's unique among project ids.
+async function uniqueProjectId(baseSlug) {
+  let candidate = baseSlug || 'project';
+  let suffix = 1;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const { data, error } = await supabase.from('projects').select('id').eq('id', candidate).limit(1);
+    if (error) throw new Error(error.message);
+    if (!data || data.length === 0) return candidate;
+
+    suffix += 1;
+    candidate = `${baseSlug}-${suffix}`;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/projects  — every project, any status
+// ---------------------------------------------------------------------------
+router.get('/projects', async (_req, res) => {
+  const { data, error } = await supabase
+    .from('projects')
+    .select(ADMIN_PROJECT_COLUMNS)
+    .order('display_order', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[admin] Fetch projects failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load projects.' });
+  }
+
+  return res.status(200).json({ ok: true, projects: data });
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/admin/projects/:id  — single project for the edit form
+// ---------------------------------------------------------------------------
+router.get('/projects/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const { data, error } = await supabase
+    .from('projects')
+    .select(ADMIN_PROJECT_COLUMNS)
+    .eq('id', id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Fetch project failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not load this project.' });
+  }
+
+  if (!data) {
+    return res.status(404).json({ ok: false, error: 'Project not found.' });
+  }
+
+  return res.status(200).json({ ok: true, project: data });
+});
+
+// ---------------------------------------------------------------------------
+// POST /api/admin/projects  — create a new project card
+// ---------------------------------------------------------------------------
+router.post('/projects', async (req, res) => {
+  const title = String(req.body?.title ?? '').trim();
+  const tag = String(req.body?.tag ?? '').trim();
+  const accent = req.body?.accent === 'secondary' ? 'secondary' : 'primary';
+  const description = String(req.body?.description ?? '').trim();
+  const imageUrl = String(req.body?.image_url ?? '').trim() || null;
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+  const requestedId = String(req.body?.id ?? '').trim();
+
+  if (!title) {
+    return res.status(400).json({ ok: false, error: 'A title is required.' });
+  }
+
+  try {
+    const baseSlug = projectSlugify(requestedId || title);
+    const id = await uniqueProjectId(baseSlug);
+
+    // New cards go after everything else by default.
+    const { data: maxOrderRow } = await supabase
+      .from('projects')
+      .select('display_order')
+      .order('display_order', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    const displayOrder = (maxOrderRow?.display_order ?? -1) + 1;
+
+    const { data, error } = await supabase
+      .from('projects')
+      .insert({
+        id,
+        title,
+        tag,
+        accent,
+        description,
+        image_url: imageUrl,
+        display_order: displayOrder,
+        status,
+      })
+      .select(ADMIN_PROJECT_COLUMNS)
+      .single();
+
+    if (error) throw new Error(error.message);
+
+    return res.status(201).json({ ok: true, project: data });
+  } catch (err) {
+    console.error('[admin] Create project failed:', err.message);
+    return res.status(500).json({ ok: false, error: 'Could not create this project.' });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// PUT /api/admin/projects/:id  — update a project card
+// ---------------------------------------------------------------------------
+router.put('/projects/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const title = String(req.body?.title ?? '').trim();
+  const tag = String(req.body?.tag ?? '').trim();
+  const accent = req.body?.accent === 'secondary' ? 'secondary' : 'primary';
+  const description = String(req.body?.description ?? '').trim();
+  const imageUrl = String(req.body?.image_url ?? '').trim() || null;
+  const status = req.body?.status === 'published' ? 'published' : 'draft';
+  const displayOrder = Number.isFinite(Number(req.body?.display_order))
+    ? Math.round(Number(req.body.display_order))
+    : 0;
+
+  if (!title) {
+    return res.status(400).json({ ok: false, error: 'A title is required.' });
+  }
+
+  const { data, error } = await supabase
+    .from('projects')
+    .update({
+      title,
+      tag,
+      accent,
+      description,
+      image_url: imageUrl,
+      display_order: displayOrder,
+      status,
+    })
+    .eq('id', id)
+    .select(ADMIN_PROJECT_COLUMNS)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[admin] Update project failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not update this project.' });
+  }
+
+  if (!data) {
+    return res.status(404).json({ ok: false, error: 'Project not found.' });
+  }
+
+  return res.status(200).json({ ok: true, project: data });
+});
+
+// ---------------------------------------------------------------------------
+// DELETE /api/admin/projects/:id  — remove a project card (and its case
+// study content, if any, since it would otherwise be unreachable).
+// ---------------------------------------------------------------------------
+router.delete('/projects/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const { error } = await supabase.from('projects').delete().eq('id', id);
+
+  if (error) {
+    console.error('[admin] Delete project failed:', error.message);
+    return res.status(500).json({ ok: false, error: 'Could not delete this project.' });
+  }
+
+  // Best-effort cleanup — don't fail the request if this part has an issue.
+  const { error: caseStudyError } = await supabase.from('case_studies').delete().eq('project_id', id);
+  if (caseStudyError) {
+    console.warn('[admin] Deleted project but could not clean up its case study:', caseStudyError.message);
+  }
+
+  return res.status(200).json({ ok: true });
+});
+
+// ---------------------------------------------------------------------------
+// POST /api/admin/uploads/image  — generic image upload, used by the
+// project image picker (and reusable anywhere else an image is needed).
+// Stored in the "project-images" Storage bucket under a unique filename so
+// repeated uploads never collide.
+// ---------------------------------------------------------------------------
+router.post('/uploads/image', (req, res) => {
+  imageUpload.single('file')(req, res, async (uploadErr) => {
+    if (uploadErr) {
+      const message =
+        uploadErr.code === 'LIMIT_FILE_SIZE'
+          ? 'That image is too large (5 MB max).'
+          : uploadErr.message || 'Could not process the uploaded file.';
+      return res.status(400).json({ ok: false, error: message });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ ok: false, error: 'No image file was uploaded.' });
+    }
+
+    try {
+      const ext = IMAGE_MIME_EXTENSIONS[req.file.mimetype] || 'jpg';
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('project-images')
+        .upload(path, req.file.buffer, {
+          contentType: req.file.mimetype,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error('[admin] Upload image failed:', uploadError.message);
+        return res.status(500).json({ ok: false, error: 'Could not upload this image.' });
+      }
+
+      const { data: publicUrlData } = supabase.storage.from('project-images').getPublicUrl(path);
+
+      return res.status(200).json({ ok: true, url: publicUrlData.publicUrl });
+    } catch (err) {
+      console.error('[admin] Unexpected error uploading image:', err);
+      if (!res.headersSent) {
+        return res.status(500).json({ ok: false, error: 'Unexpected server error while uploading the image. Please try again.' });
+      }
+    }
+  });
+});
+
+
+// ---------------------------------------------------------------------------
 // Case study management
 //
-// Each case study is linked to an EXISTING project card via `project_id`
-// (matching an id in the static `projects` array in
-// src/components/FeaturedProjects.jsx). This never creates, edits, or
+// Each case study is linked to a project card via `project_id` (matching an
+// `id` in the `projects` table above). This never creates, edits, or
 // deletes a project card itself — it only stores the extra case-study
 // content shown on that project's /projects/:projectId/case-study page.
 // ---------------------------------------------------------------------------

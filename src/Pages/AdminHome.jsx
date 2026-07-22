@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Newspaper, Wrench, FolderKanban, LogOut, ChevronRight, ShieldCheck, FileStack, MessageSquareQuote, Building2 } from 'lucide-react';
+import { Mail, Newspaper, Wrench, FolderKanban, LayoutGrid, LogOut, ChevronRight, ShieldCheck, FileStack, MessageSquareQuote, Building2 } from 'lucide-react';
 import { clearAdminToken } from '../lib/adminApi';
 
 // ---------------------------------------------------------------------------
@@ -33,9 +33,17 @@ const ADMIN_SECTIONS = [
     accent: '#a34700',
   },
   {
+    key: 'projects',
+    title: 'Manage Projects',
+    description: 'Add, edit, or remove project cards on the Projects and Home pages, including uploading each card\u2019s image.',
+    to: '/admin/projects',
+    icon: LayoutGrid,
+    accent: '#003594',
+  },
+  {
     key: 'case-studies',
     title: 'Manage Case Studies',
-    description: 'Add case study write-ups to your existing project cards — none get removed.',
+    description: 'Add the detailed write-up shown behind \u201cExplore Case Study\u201d for each project.',
     to: '/admin/case-studies',
     icon: FolderKanban,
     accent: '#7c3aed',

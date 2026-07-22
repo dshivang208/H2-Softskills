@@ -13,7 +13,6 @@ import {
   FileText,
 } from 'lucide-react';
 import { adminFetch, adminUpload, clearAdminToken } from '../lib/adminApi';
-import { projects } from '../components/FeaturedProjects';
 
 const EMPTY_TITLED = { title: '', description: '' };
 
@@ -183,6 +182,7 @@ function AdminCaseStudies() {
   const navigate = useNavigate();
 
   const [caseStudiesByProject, setCaseStudiesByProject] = useState({});
+  const [projectsList, setProjectsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
 
@@ -199,12 +199,16 @@ function AdminCaseStudies() {
     setLoading(true);
     setLoadError('');
     try {
-      const data = await adminFetch('/api/admin/case-studies');
+      const [caseStudiesData, projectsData] = await Promise.all([
+        adminFetch('/api/admin/case-studies'),
+        adminFetch('/api/admin/projects'),
+      ]);
       const byProject = {};
-      (data.caseStudies || []).forEach((cs) => {
+      (caseStudiesData.caseStudies || []).forEach((cs) => {
         byProject[cs.project_id] = cs;
       });
       setCaseStudiesByProject(byProject);
+      setProjectsList(projectsData.projects || []);
     } catch (err) {
       setLoadError(err.message || 'Could not load case studies.');
       if (err.message?.toLowerCase().includes('session expired')) {
@@ -342,7 +346,7 @@ function AdminCaseStudies() {
     }
   };
 
-  const activeProject = projects.find((p) => p.id === activeProjectId);
+  const activeProject = projectsList.find((p) => p.id === activeProjectId);
 
   return (
     <main className="relative min-h-[calc(100vh-56px)] bg-[#faf8ff] tech-grid overflow-x-hidden">
@@ -364,9 +368,13 @@ function AdminCaseStudies() {
               Case Study Manager
             </h1>
             <p className="text-sm text-[#737685] mt-2 max-w-xl">
-              Add case study details for your existing project cards. The cards on the Projects
-              and Home pages stay exactly as they are — this only adds the content behind
-              &quot;Explore Case Study&quot;.
+              Add case study details for your project cards. This only manages the content behind
+              &quot;Explore Case Study&quot; — to add, edit, or remove the project cards themselves
+              (including their image), use{' '}
+              <Link to="/admin/projects" className="font-semibold text-[#003594] hover:underline">
+                Manage Projects
+              </Link>
+              .
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -415,16 +423,16 @@ function AdminCaseStudies() {
                       </tr>
                     </thead>
                     <tbody>
-                      {projects.map((project) => {
+                      {projectsList.map((project) => {
                         const existing = caseStudiesByProject[project.id];
                         return (
                           <tr key={project.id} className="border-b border-[#c3c6d6]/15 last:border-0 hover:bg-[#faf8ff]">
                             <td className="px-5 py-3.5 text-[#131b2e] font-medium max-w-xs">
                               <div className="flex items-center gap-3">
                                 <img
-                                  src={project.image}
+                                  src={project.image_url}
                                   alt={project.title}
-                                  className="w-9 h-9 rounded-lg object-cover flex-shrink-0"
+                                  className="w-9 h-9 rounded-lg object-cover flex-shrink-0 bg-[#eaedff]"
                                 />
                                 <span className="truncate">{project.title}</span>
                               </div>
@@ -478,7 +486,7 @@ function AdminCaseStudies() {
           >
             <div className="flex items-center gap-3">
               <img
-                src={activeProject.image}
+                src={activeProject.image_url}
                 alt={activeProject.title}
                 className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
               />

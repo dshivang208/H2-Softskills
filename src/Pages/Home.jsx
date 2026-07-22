@@ -4,6 +4,7 @@ import VideoShowcase from '../components/VideoShowcase';
 import FeaturedProjects from '../components/FeaturedProjects';
 import TechStack from '../components/TechStack';
 import OurProcess from '../components/OurProcess';
+import WhyChooseUs from '../components/WhyChooseUs';
 import Clients from '../components/Clients';
 import Testimonials from '../components/Testimonials';
 import CtaBanner from '../components/CtaBanner';
@@ -138,6 +139,11 @@ function Home() {
 
       {/* Our Process */}
       <OurProcess />
+
+      {/* Why Choose Us */}
+      <div className="pt-8 md:pt-12">
+        <WhyChooseUs />
+      </div>
 
       {/* Testimonials (admin-managed) */}
       <Testimonials />

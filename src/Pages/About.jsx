@@ -1,5 +1,6 @@
 import { Lightbulb, Users, ShieldCheck, Rocket, Smile, Star, Users2, Heart, Settings, Flag } from 'lucide-react';
 import logo1 from '../assets/logo1.png';
+import WhyChooseUs from '../components/WhyChooseUs';
 
 const heroFeatures = [
   {
@@ -182,6 +183,9 @@ function About() {
           </div>
         </div>
       </section>
+
+      {/* Why Choose Us */}
+      <WhyChooseUs />
     </main>
   );
 }

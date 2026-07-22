@@ -17,6 +17,7 @@ import AdminDashboard from './Pages/AdminDashboard';
 import AdminBlogs from './Pages/AdminBlogs';
 import AdminServices from './Pages/AdminServices';
 import AdminCaseStudies from './Pages/AdminCaseStudies';
+import AdminProjects from './Pages/AdminProjects';
 import AdminServiceDetails from './Pages/AdminServiceDetails';
 import AdminTestimonials from './Pages/AdminTestimonials';
 import AdminClientLogos from './Pages/AdminClientLogos';
@@ -74,6 +75,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminCaseStudies />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/projects"
+            element={
+              <ProtectedRoute>
+                <AdminProjects />
               </ProtectedRoute>
             }
           />

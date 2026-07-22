@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Loader2, FileDown, PhoneCall, Sparkles } from 'lucide-react';
-import { projects } from '../components/FeaturedProjects';
+import { fetchPublishedProjects } from '../lib/projectsApi';
 import { fetchCaseStudy } from '../lib/caseStudyApi';
 
 const accentText = {
@@ -31,10 +31,42 @@ function CaseStudy() {
   const { projectId } = useParams();
   const navigate = useNavigate();
 
-  const project = projects.find((p) => p.id === projectId);
+  const [project, setProject] = useState(null);
+  const [projectLoading, setProjectLoading] = useState(true);
 
   const [caseStudy, setCaseStudy] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setProjectLoading(true);
+    fetchPublishedProjects()
+      .then((data) => {
+        if (cancelled) return;
+        const found = (data.projects || []).find((p) => p.id === projectId);
+        setProject(
+          found
+            ? {
+                id: found.id,
+                title: found.title,
+                tag: found.tag,
+                accent: found.accent,
+                description: found.description,
+                image: found.image_url,
+              }
+            : null
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setProject(null);
+      })
+      .finally(() => {
+        if (!cancelled) setProjectLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,6 +81,16 @@ function CaseStudy() {
       cancelled = true;
     };
   }, [projectId]);
+
+  // Still checking whether this project exists — avoid flashing the "not
+  // found" state before the fetch has a chance to resolve.
+  if (projectLoading) {
+    return (
+      <main className="min-h-[60vh] flex items-center justify-center bg-[#faf8ff]">
+        <Loader2 className="w-5 h-5 animate-spin text-[#737685]" />
+      </main>
+    );
+  }
 
   // Unknown project id (not one of the existing project cards) — bail out
   // to the projects grid rather than rendering a broken page.
