@@ -11,7 +11,7 @@ import {
   X,
 } from 'lucide-react';
 import { adminFetch, clearAdminToken } from '../lib/adminApi';
-import { services as hardcodedServices, ICON_MAP } from '../components/Services';
+import { ICON_MAP } from '../components/Services';
 
 function emptyForm() {
   return {
@@ -229,9 +229,9 @@ function AdminServiceDetails() {
   const navigate = useNavigate();
 
   // The full catalogue of services this admin section can attach detail
-  // pages to: the built-in hardcoded cards PLUS any admin-added ones —
-  // never a replacement for either list.
-  const [allServices, setAllServices] = useState(hardcodedServices);
+  // pages to — every service card on the site, since they all live in the
+  // `services` table now.
+  const [allServices, setAllServices] = useState([]);
   const [detailsByService, setDetailsByService] = useState({});
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -252,11 +252,11 @@ function AdminServiceDetails() {
         adminFetch('/api/admin/service-details'),
       ]);
 
-      const adminServices = (servicesRes.services || []).map((service) => ({
+      const mappedServices = (servicesRes.services || []).map((service) => ({
         ...service,
         icon: ICON_MAP[service.icon] || ICON_MAP.Code2,
       }));
-      setAllServices([...hardcodedServices, ...adminServices]);
+      setAllServices(mappedServices);
 
       const byService = {};
       (detailsRes.serviceDetails || []).forEach((d) => {

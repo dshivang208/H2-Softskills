@@ -387,10 +387,10 @@ router.delete('/blogs/:id', async (req, res) => {
 // ---------------------------------------------------------------------------
 // Services management
 //
-// These are ADDITIONAL services shown on the public /services page. They
-// are stored separately from — and never overwrite — the hardcoded services
-// array in src/components/Services.jsx, which keeps powering the Home page
-// carousel and the original Services page cards.
+// Every service card shown on the Home page carousel and the public
+// /services page — including the original 6 — lives in this table and is
+// fully editable here. src/components/Services.jsx keeps a copy of that
+// original data only as an offline fallback if the API is unreachable.
 // ---------------------------------------------------------------------------
 
 const ADMIN_SERVICE_COLUMNS =
@@ -1049,11 +1049,11 @@ router.delete('/case-studies/:projectId/report', async (req, res) => {
 // Service detail page management
 //
 // Each service detail row is linked to an EXISTING service card via
-// `service_id` (matching an id in the static `services` array in
-// src/components/Services.jsx, or the uuid id of an admin-added service
-// from the `services` table). This never creates, edits, or deletes a
-// service card itself — it only stores the extra content shown on that
-// service's /services/:serviceId detail page.
+// `service_id` (matching the id of a row in the `services` table — a slug
+// like 'cloud' for the original seeded services, or a generated id for
+// anything added later). This never creates, edits, or deletes a service
+// card itself — it only stores the extra content shown on that service's
+// /services/:serviceId detail page.
 // ---------------------------------------------------------------------------
 
 const ADMIN_SERVICE_DETAIL_COLUMNS =

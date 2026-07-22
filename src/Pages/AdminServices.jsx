@@ -187,8 +187,8 @@ function AdminServices() {
               Service Manager
             </h1>
             <p className="text-sm text-[#737685] mt-2 max-w-xl">
-              Services you add here appear on the Services page alongside the existing cards —
-              nothing already on the site gets removed.
+              Every service shown on the Home page and Services page lives here — edit or delete
+              an existing one, unpublish it by saving as a draft, or add a brand new service.
             </p>
           </div>
           <div className="flex items-center gap-3">

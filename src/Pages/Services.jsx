@@ -1,36 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { services, ServiceCard, ICON_MAP } from '../components/Services';
+import { FALLBACK_SERVICES, ServiceCard, mapApiService } from '../components/Services';
 import { fetchPublishedServices } from '../lib/servicesApi';
 
 function Services() {
-  // Admin-added services (from Supabase) are kept separate from — and
-  // appended after — the built-in `services` array so none of the existing
-  // hardcoded cards on this page (or the Home page carousel) are ever
-  // removed or reordered.
-  const [adminServices, setAdminServices] = useState([]);
+  // All services — including the original 6 — now live in the database and
+  // are fully editable from /admin/services. FALLBACK_SERVICES only kicks
+  // in if the API can't be reached, so the page never renders empty.
+  const [allServices, setAllServices] = useState(FALLBACK_SERVICES);
 
   useEffect(() => {
     let cancelled = false;
 
     fetchPublishedServices().then((data) => {
-      if (cancelled) return;
-      const mapped = data.map((service) => ({
-        ...service,
-        image: service.image_url,
-        icon: ICON_MAP[service.icon] || ICON_MAP.Code2,
-        stats: Array.isArray(service.stats) ? service.stats : [],
-      }));
-      setAdminServices(mapped);
+      if (cancelled || !data || data.length === 0) return;
+      setAllServices(data.map(mapApiService));
     });
 
     return () => {
       cancelled = true;
     };
   }, []);
-
-  const allServices = [...services, ...adminServices];
 
   return (
     <main className="bg-[#f8fafc] pt-4 pb-16 md:pt-16">

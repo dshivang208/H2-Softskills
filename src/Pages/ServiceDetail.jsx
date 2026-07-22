@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Loader2, PhoneCall, Sparkles, CheckCircle2 } from 'lucide-react';
-import { services, ICON_MAP } from '../components/Services';
+import { FALLBACK_SERVICES, mapApiService } from '../components/Services';
 import { fetchPublishedServices } from '../lib/servicesApi';
 import { fetchServiceDetail } from '../lib/serviceDetailApi';
 
@@ -53,8 +53,8 @@ function ServiceDetail() {
   const { serviceId } = useParams();
   const navigate = useNavigate();
 
-  const [adminServices, setAdminServices] = useState([]);
-  const [adminServicesLoaded, setAdminServicesLoaded] = useState(false);
+  const [allServices, setAllServices] = useState(FALLBACK_SERVICES);
+  const [servicesLoaded, setServicesLoaded] = useState(false);
   const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -62,14 +62,10 @@ function ServiceDetail() {
     let cancelled = false;
     fetchPublishedServices().then((data) => {
       if (cancelled) return;
-      const mapped = data.map((service) => ({
-        ...service,
-        image: service.image_url,
-        icon: ICON_MAP[service.icon] || ICON_MAP.Code2,
-        stats: Array.isArray(service.stats) ? service.stats : [],
-      }));
-      setAdminServices(mapped);
-      setAdminServicesLoaded(true);
+      if (data && data.length > 0) {
+        setAllServices(data.map(mapApiService));
+      }
+      setServicesLoaded(true);
     });
     return () => {
       cancelled = true;
@@ -90,14 +86,13 @@ function ServiceDetail() {
     };
   }, [serviceId]);
 
-  const allServices = [...services, ...adminServices];
   const service = allServices.find((s) => s.id === serviceId);
 
   // Unknown service id — bail out to the services grid rather than
-  // rendering a broken page. Wait for the admin-services fetch to finish
-  // first, since a service might only exist in that list.
+  // rendering a broken page. Wait for the services fetch to finish first,
+  // since a service might only exist in the live (non-fallback) list.
   if (!service) {
-    if (!adminServicesLoaded) {
+    if (!servicesLoaded) {
       return (
         <main className="min-h-[60vh] flex items-center justify-center bg-[#faf8ff]">
           <Loader2 className="w-5 h-5 animate-spin text-[#737685]" />

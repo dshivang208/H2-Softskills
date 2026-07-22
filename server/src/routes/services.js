@@ -6,8 +6,9 @@ const router = Router();
 const PUBLIC_COLUMNS = 'id, title, tag, description, image_url, icon, stats, created_at';
 
 // ---------------------------------------------------------------------------
-// GET /api/services  — published admin-added services, oldest first so new
-// ones append after the existing hardcoded cards on the Services page.
+// GET /api/services  — every published service (including the original 6,
+// seeded via server/sql/seed_static_services.sql), oldest first so newly
+// added services append after the existing ones on the Services page.
 // ---------------------------------------------------------------------------
 router.get('/', async (_req, res) => {
   const { data, error } = await supabase

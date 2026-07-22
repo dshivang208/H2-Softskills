@@ -4,9 +4,9 @@
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 /**
- * Fetches admin-added, published services. Returns an empty array (rather
- * than throwing) on failure, so the Services page can always fall back to
- * showing just the built-in hardcoded cards.
+ * Fetches every published service (including the original 6). Returns an
+ * empty array (rather than throwing) on failure, so callers can always fall
+ * back to the built-in FALLBACK_SERVICES list from components/Services.jsx.
  */
 export async function fetchPublishedServices() {
   try {
