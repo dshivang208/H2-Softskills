@@ -2,7 +2,14 @@ import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import logo from '../assets/logo.png';
 
-const quickLinks = ['Home', 'About Us', 'Services', 'Projects', 'Blog', 'Contact'];
+const quickLinks = [
+  { name: "Home", path: "/" },
+  { name: "About Us", path: "/about" },
+  { name: "Services", path: "/services" },
+  { name: "Projects", path: "/projects" },
+  { name: "Blog", path: "/blog" },
+  { name: "Contact", path: "/contact" },
+];
 
 const services = [
   'Web & Full Stack Development',
@@ -62,21 +69,41 @@ const socialLinks = [
   { icon: YoutubeIcon, label: 'YouTube', href: '#' },
 ];
 
+// `links` can be either:
+//  - an array of plain strings (Services, Technologies) — rendered as
+//    plain anchors, since those aren't real routes.
+//  - an array of { name, path } objects (Quick Links) — rendered as real
+//    react-router <Link>s so they actually navigate.
 function FooterColumn({ title, links }) {
   return (
     <div>
       <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">{title}</h4>
       <ul className="space-y-2.5">
-        {links.map((link) => (
-          <li key={link}>
-            <a
-              href="#"
-              className="text-gray-400 text-sm hover:text-[#4edea3] transition-colors"
-            >
-              {link}
-            </a>
-          </li>
-        ))}
+        {links.map((link) => {
+          const isRoute = typeof link === 'object' && link !== null;
+          const key = isRoute ? link.path : link;
+          const label = isRoute ? link.name : link;
+
+          return (
+            <li key={key}>
+              {isRoute ? (
+                <Link
+                  to={link.path}
+                  className="text-gray-400 text-sm hover:text-[#4edea3] transition-colors"
+                >
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  href="#"
+                  className="text-gray-400 text-sm hover:text-[#4edea3] transition-colors"
+                >
+                  {label}
+                </a>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

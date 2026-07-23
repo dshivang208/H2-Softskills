@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   ArrowRight,
   ChevronLeft,
@@ -267,13 +268,13 @@ export default function Services() {
 
           {/* Right: Action Button */}
           <div className="flex-shrink-0">
-            <button
-              type="button"
+            <Link
+              to ="/Services"
               className="group flex items-center gap-2 border border-[#c3c6d7] px-6 py-3 rounded-xl hover:bg-[#eaedff] transition-all font-semibold text-[#131b2e]"
             >
               View All Services
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>
