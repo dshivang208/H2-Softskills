@@ -48,7 +48,7 @@ function Home() {
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4 pt-2">
               <a
-                href="#"
+                href="/Services"
                 className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-gradient-to-r from-blue-600 via-blue-500 to-[#00b06b] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/10 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span classname="text-xl">Explore Our Services</span>
@@ -56,7 +56,7 @@ function Home() {
               </a>
 
               <a
-                href="#"
+                href="/Projects"
                 className="group inline-flex items-center justify-center gap-3 rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>View Our Work</span>
