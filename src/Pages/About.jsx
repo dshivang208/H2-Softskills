@@ -96,7 +96,7 @@ function About() {
                 <img
                   src={logo1}
                   alt="H2 Softskills"
-                  className="w-16 sm:w-20 md:w-24 lg:w-32 h-auto object-contain opacity-50 drop-shadow-[0_0_20px_rgba(0,255,136,0.25)] translate-x-4 md:translate-x-8"
+                  className="w-24 sm:w-28 md:w-32 lg:w-32 h-auto object-contain opacity-95 lg:opacity-50 drop-shadow-[0_0_25px_rgba(0,255,136,0.35)] lg:drop-shadow-[0_0_20px_rgba(0,255,136,0.25)] mx-auto lg:mx-0 lg:translate-x-8"
                 />
               </div>
 
