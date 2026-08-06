@@ -32,9 +32,27 @@ process.on('uncaughtException', (err) => {
 });
 
 app.use(express.json());
+
+// CLIENT_ORIGIN can hold one or more allowed origins, comma-separated
+// (e.g. "https://h2softskills.com,https://www.h2softskills.com,https://h2-softskills.vercel.app").
+// This lets the API accept requests from the custom domain, its www
+// variant, and the Vercel preview URL at the same time, instead of
+// only ever matching a single hardcoded origin string.
+const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+    origin(origin, callback) {
+      // Allow non-browser requests (no Origin header, e.g. curl/health checks)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Not allowed by CORS: ${origin}`));
+      }
+    },
   })
 );
 
