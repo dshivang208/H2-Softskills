@@ -2,9 +2,9 @@ import { useRef, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const contactInfo = [
-  { icon: Phone, label: 'PHONE', value: '+91 98765-43210' },
-  { icon: Mail, label: 'EMAIL', value: 'hello@h2softskills.in' },
-  { icon: MapPin, label: 'LOCATION', value: 'Mohali, Punjab, India' },
+  // { icon: Phone, label: 'PHONE', value: '+91 98765-43210' },
+  { icon: Mail, label: 'EMAIL', value: 'dvps2818@gmail.com' },
+  { icon: MapPin, label: 'LOCATION', value: '58 Spirit Boulevard, Cranbourne East, Victoria 3977, Australia' },
   { icon: Clock, label: 'BUSINESS HOURS', value: 'Mon - Sat: 9:00 AM - 7:00 PM' },
 ];
 
@@ -209,8 +209,8 @@ function Contact() {
         <div className="mt-20 md:mt-28">
           <div className="relative w-full h-[400px] md:h-[500px] rounded-[3rem] overflow-hidden shadow-xl border border-[#c3c6d6]/50">
             <iframe
-              title="H2 Softskills location - Mohali, Punjab, India"
-              src="https://www.google.com/maps?q=Sector+67,+Mohali,+Punjab,+India&output=embed"
+              title="H2 Softskills location - 58 Spirit Boulevard, Cranbourne East, Victoria 3977, Australia"
+              src="https://www.google.com/maps?q=58 Spirit Boulevard, Cranbourne East, Victoria 3977, Australia&output=embed"
               className="absolute inset-0 w-full h-full border-0"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -219,7 +219,7 @@ function Contact() {
             <div className="pointer-events-none absolute bottom-8 left-8 glass-card p-6 rounded-2xl max-w-xs hidden md:block">
               <h4 className="text-xl text-black font-bold mb-2">Visit Our HQ</h4>
               <p className="text-sm text-slate-900 font-bold">
-                Premium Tech Park, Sector 67, Mohali, Punjab 160062, India
+                58 Spirit Boulevard, Cranbourne East, Victoria 3977, Australia
               </p>
             </div>
           </div>

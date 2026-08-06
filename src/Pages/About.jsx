@@ -162,7 +162,11 @@ function About() {
           </div>
         </div>
       </section>
+       
+       {/* Why Choose Us */}
+      <WhyChooseUs />
 
+      
       {/* Values Section */}
       <section className="pb-24 px-6 lg:px-16 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -184,8 +188,7 @@ function About() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <WhyChooseUs />
+      
     </main>
   );
 }

@@ -66,7 +66,7 @@ function Home() {
               </a>
             </div>
 
-            {/* Trust Section */}
+             {/* Trust Section */}
             <div className="space-y-4 pt-8 border-t border-white/5">
               <p className="text-sm font-medium text-white tracking-wide uppercase">
                 Trusted by innovative companies worldwide
@@ -119,7 +119,8 @@ function Home() {
                   <span className="font-semibold text-xl tracking-tight">Microsoft</span>
                 </div>
               </div>
-            </div>
+            </div> 
+            
 
           </div>
         </div>

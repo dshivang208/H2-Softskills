@@ -142,18 +142,25 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">Contact Us</h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-gray-400 text-sm">
+              {/* <li className="flex items-center gap-2 text-gray-400 text-sm">
                 <Phone className="w-4 h-4 flex-shrink-0 text-[#4edea3]" strokeWidth={2} />
                 <span>+91 98765 43210</span>
-              </li>
+              </li> */}
               <li className="flex items-center gap-2 text-gray-400 text-sm">
                 <Mail className="w-4 h-4 flex-shrink-0 text-[#4edea3]" strokeWidth={2} />
-                <span>hello@h2softskills.in</span>
+                <span>dvps2818@gmail.com</span>
               </li>
-              <li className="flex items-center gap-2 text-gray-400 text-sm">
-                <MapPin className="w-4 h-4 flex-shrink-0 text-[#4edea3]" strokeWidth={2} />
-                <span>Mohali, Punjab, India</span>
-              </li>
+              <li className="flex items-start gap-2 text-gray-400 text-sm">
+  <MapPin
+    className="w-4 h-4 flex-shrink-0 text-[#4edea3] mt-0.5"
+    strokeWidth={2}
+  />
+
+  <span className="flex flex-col">
+    <span>58 Spirit Blvd</span>
+    <span>Cranbourne East, Victoria 3977, Australia</span>
+  </span>
+</li>
             </ul>
           </div>
         </div>
