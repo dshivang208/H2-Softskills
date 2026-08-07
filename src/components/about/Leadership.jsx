@@ -62,10 +62,10 @@ export default function Leadership() {
             <p className="text-sm text-gray-500 mb-8">
               A team of passionate professionals dedicated to building a better tomorrow.
             </p>
-            <button className="bg-[#1b3322] text-white px-6 py-3 rounded-lg flex items-center gap-2 group hover:gap-3 transition-all font-bold">
+            {/* <button className="bg-[#1b3322] text-white px-6 py-3 rounded-lg flex items-center gap-2 group hover:gap-3 transition-all font-bold">
               <span className="text-[16px]">Meet Our Team</span>
               <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
-            </button>
+            </button> */}
 
             <div className="flex gap-4 mt-8">
               <button
