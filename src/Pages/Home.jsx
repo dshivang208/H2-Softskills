@@ -9,6 +9,7 @@ import Clients from '../components/Clients';
 import Testimonials from '../components/Testimonials';
 import CtaBanner from '../components/CtaBanner';
 import heroGraphic from '../assets/hero-graphic.png';
+import Leadership1 from '../components/about/Leadership';
 import { ArrowRight, Play, Rocket, ShieldCheck, TrendingUp, Users } from 'lucide-react';
 
 const trustBadges = [
@@ -143,6 +144,9 @@ function Home() {
 
       {/* Our Clients */}
       <Clients />
+      
+      {/* Leadership Section */}
+      <Leadership1 />
 
       {/* Call To Action Banner */}
       <CtaBanner />
