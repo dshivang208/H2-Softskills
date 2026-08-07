@@ -9,7 +9,34 @@ import Clients from '../components/Clients';
 import Testimonials from '../components/Testimonials';
 import CtaBanner from '../components/CtaBanner';
 import heroGraphic from '../assets/hero-graphic.png';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Rocket, ShieldCheck, TrendingUp, Users } from 'lucide-react';
+
+const trustBadges = [
+  {
+    icon: Rocket,
+    color: '#38bdf8',
+    title: 'Innovative',
+    description: 'Future-focused solutions',
+  },
+  {
+    icon: ShieldCheck,
+    color: '#22d3ee',
+    title: 'Reliable',
+    description: 'Secure. Scalable. Dependable.',
+  },
+  {
+    icon: TrendingUp,
+    color: '#3b82f6',
+    title: 'Results-Driven',
+    description: 'Measurable impact that matters',
+  },
+  {
+    icon: Users,
+    color: '#a855f7',
+    title: 'Client-Centric',
+    description: 'Your success is our priority',
+  },
+];
 
 function Home() {
   return (
@@ -66,61 +93,23 @@ function Home() {
               </a>
             </div>
 
-             {/* Trust Section */}
-            <div className="space-y-4 pt-8 border-t border-white/5">
-              <p className="text-sm font-medium text-white tracking-wide uppercase">
-                Trusted by innovative companies worldwide
-              </p>
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-6 opacity-75">
-                {/* Polygon Logo */}
-                <div className="flex items-center gap-2 text-white">
-                  <svg className="h-7 w-7 fill-current text-[#7B3FE4]" viewBox="0 0 24 24">
-                    <path d="M12 .21L2.14 5.9v11.38L12 23.79l9.86-5.91V5.9L12 .21zm7.86 16.31l-7.86 4.71-7.86-4.71V6.98l7.86-4.71 7.86 4.71v9.54z" />
-                    <path d="M12 5.5l-5.5 3.3v6.4l5.5 3.3 5.5-3.3v-6.4L12 5.5zm3.5 9.1l-3.5 2.1-3.5-2.1V9.8l3.5-2.1 3.5 2.1v4.8z" />
-                  </svg>
-                  <span className="font-semibold text-xl text-white tracking-tight">polygon</span>
-                </div>
-
-                {/* Binance Logo */}
-                <div className="flex items-center gap-2 text-white">
-                  <svg className="h-7 w-7 fill-current text-[#F0B90B]" viewBox="0 0 24 24">
-                    <path d="M12 0l4.5 4.5L12 9 7.5 4.5 12 0zM4.5 7.5L9 12l-4.5 4.5L0 12l4.5-4.5zM12 15l4.5 4.5-4.5 4.5-4.5-4.5 4.5-4.5zm7.5-7.5L24 12l-4.5 4.5L15 12l4.5-4.5z" />
-                  </svg>
-                  <span className="font-semi-bold text-xl tracking-wider">BINANCE</span>
-                </div>
-
-                {/* AWS Logo */}
-                <div className="flex items-center gap-2 text-[#ffffff]">
-                  <span className="font-bold text-xl  lowercase tracking-tighter text-[#ffffff]">aws</span>
-                </div>
-
-                {/* Solana Logo */}
-                <div className="flex items-center gap-1.5 text-white">
-                  <svg className="h-5 w-auto fill-current" viewBox="0 0 327 274">
-                    <path d="M37.2 273.6c-4.4 0-8.8-1.8-12-5.3L1.6 242.4c-2.1-2.4-2.1-6 0-8.4L33.7 197c3.2-3.6 7.6-5.3 12-5.3h280c4.4 0 8.8 1.8 12 5.3l23.6 25.9c2.1 2.4 2.1 6 0 8.4l-32.1 37c-3.2 3.6-7.6 5.3-12 5.3H37.2zM289.8.4c4.4 0 8.8 1.8 12 5.3l32.1 37c2.1 2.4 2.1 6 0 8.4l-32.1 37c-3.2 3.6-7.6 5.3-12 5.3H37.8c-4.4 0-8.8-1.8-12-5.3L2.2 62.2c-2.1-2.4-2.1-6 0-8.4L34.3 16.8C37.5 13.2 41.9 11.5 46.3 11.5h243.5M289.8 96.4c4.4 0 8.8 1.8 12 5.3l32.1 37c2.1 2.4 2.1 6 0 8.4l-32.1 37c-3.2 3.6-7.6 5.3-12 5.3H37.8c-4.4 0-8.8-1.8-12-5.3L2.2 158.2c-2.1-2.4-2.1-6 0-8.4l32.1-37c3.2-3.6 7.6-5.3 12-5.3h243.5z" fill="url(#solana-gradient)" />
-                    <defs>
-                      <linearGradient id="solana-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#00FFA3" />
-                        <stop offset="100%" stopColor="#DC1FFF" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <span className="font-semi-bold text-xl tracking-wider uppercase">solana</span>
-                </div>
-
-                {/* Microsoft Logo */}
-                <div className="flex items-center gap-2 text-white">
-                  <div className="grid grid-cols-2 gap-0.7 w-6 h-6">
-                    <div className="bg-[#F25022] w-2.5 h-2.5" />
-                    <div className="bg-[#7FBA00] w-2.5 h-2.5" />
-                    <div className="bg-[#00A4EF] w-2.5 h-2.5" />
-                    <div className="bg-[#FFB900] w-2.5 h-2.5" />
+            {/* Trust Section */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-8 border-t border-white/5">
+              {trustBadges.map(({ icon: Icon, color, title, description }) => (
+                <div key={title} className="flex items-center gap-3 px-1 py-1">
+                  <div
+                    className="w-9 h-9 rounded-lg border flex items-center justify-center flex-shrink-0"
+                    style={{ borderColor: `${color}40`, color }}
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={2} />
                   </div>
-                  <span className="font-semibold text-xl tracking-tight">Microsoft</span>
+                  <div>
+                    <p className="text-sm font-bold text-white">{title}</p>
+                    <p className="text-xs text-stone-400 leading-snug">{description}</p>
+                  </div>
                 </div>
-              </div>
-            </div> 
-            
+              ))}
+            </div>
 
           </div>
         </div>
