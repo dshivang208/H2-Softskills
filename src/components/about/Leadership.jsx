@@ -35,7 +35,7 @@ const TEAM = [
   {
     key: "priya",
     name: "Priya Mehta",
-    role: "Head - Marketing",
+    role: "Tech - Head",
     image:
       "",
     alt: "Priya's Image",
