@@ -13,32 +13,32 @@ const TEAM = [
     name: "Rohit Malhotra",
     role: "Founder & CEO",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAtjk2UZ9zIEhB3NtldG3JogbtVw9gELCCfv0fJXpKhy-TcXuSafbyD6TVLMUNJ7AyzgVFc8kZBWmD3yHcdvYHC_BnN2A8Lw2OkONPKePYP0pzNtECS3Qbxwtkl-ZM9dzHa45VRPhzQwXAYG8ANrL-cUVQ4bLr9LlZs62gSfqfbDosfSo5L-AOMWi0Z07p7G5p6vT9mejPRv_5pZKKQMPmwZgz9JDVZHc1DPBwQaveOicH_kr65bsdS6Q",
-    alt: "Rohit Malhotra, Founder and CEO",
+      "",
+    alt: "Rohit Image",
   },
   {
     key: "neha",
     name: "Neha Sharma",
     role: "Director - Operations",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBKkPNIi5t7Doa8Cn0GA9Af6Q7_Gt08vyRsi7IykAF-grRpUGJ9mr7i_XaaOw_z32HxVWScUKpOp8KpNyALo-gPD-ehaujLTCtXo7gbovTvD5bhbN53u_QEDk0pd8fDa-UUThEhq1jcMpzGoVPyWWyMZNYI3PX1zJTQMtaO8D4vOF2f8ZzM0IoRcgXj7tsJalTq_7xxSLHfkjoaFJINb7-V2Tntf0LHvF7st6QL36KS1Ehlr6-6Cz8V_g",
-    alt: "Neha Sharma, Director of Operations",
+      "",
+    alt: "Neha's Image",
   },
   {
     key: "amit",
     name: "Amit Verma",
     role: "Director - Sales & Strategy",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCsghShq1aKGlFGmXqoBNwpd4d_aMRhv_OCdA3r0m2MLkBZGYZkXv21tc54gfQpnendptRDMoF2VY-LgRFu-NUZzttWGyz3NKFFsNzy75TXJJNfuXelScNljOSjKcvXp78blMxyV92Z13dyIASOJ8C4R2FIRPljwLvQBa2qtej7nOIy7oGnHKSA3rFGIEba8AbJn7uPOOxeAvf__eve83eIAKqouVrb31Kbd2OD1L8lpUCN1T9HQ4-NFQ",
-    alt: "Amit Verma, Director of Sales and Strategy",
+      "",
+    alt: "Amit's Image",
   },
   {
     key: "priya",
     name: "Priya Mehta",
     role: "Head - Marketing",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDDXEb9zytQGuBjWAYJEEMDYfx9eVpN1bzQuTf_9GOF1RHcQXQ1xlFGWor2xS-em9h8Nh2ua1lk5M6UstX_j0Ue3Mbt01_p5nEbp7WzPv5EMJb97g1BZFv8CyMTpeYFqtn2WfVE8T5MOTR74oUqOKkZ33DQioxAO98lTElCOL9HLze6I_nCE6yS7U6jAZWeQ9T9RaffsRRCHAc1N_NwRXt0uSfiG1hS_I4FPxiskdSKYmL4YZcV9ZmV9A",
-    alt: "Priya Mehta, Head of Marketing",
+      "",
+    alt: "Priya's Image",
   },
 ];
 
