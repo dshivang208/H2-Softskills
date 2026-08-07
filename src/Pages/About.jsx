@@ -165,7 +165,7 @@ function About() {
       </section>
 
       {/* Values Section */}
-      <section className="pb-24 px-6 lg:px-16 bg-white">
+      {/* <section className="pb-24 px-6 lg:px-16 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-extrabold text-slate-900 mb-12">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -183,7 +183,7 @@ function About() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Why Choose Us */}
       <WhyChooseUs />
