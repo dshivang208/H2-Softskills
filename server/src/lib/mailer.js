@@ -36,13 +36,23 @@ export async function sendEnquiryEmail({ name, email, subject, message }) {
     </div>
   `;
 
-  return resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: MAIL_FROM,
     to: MAIL_TO,
     replyTo: email,
     subject: `New enquiry: ${subject}`,
     html,
   });
+
+  // The Resend SDK resolves successfully even when the API rejects the
+  // send (bad `from` domain, rate limit, invalid recipient, etc.) — it
+  // reports the failure via this `error` field instead of throwing. If we
+  // don't check it, callers using Promise.allSettled see a false
+  // "fulfilled" and think the email went out when it didn't.
+  if (error) {
+    throw new Error(error.message || 'Resend rejected the enquiry email.');
+  }
+  return data;
 }
 
 /**
@@ -70,13 +80,18 @@ export async function sendAutoReplyEmail({ name, email, subject }) {
     </div>
   `;
 
-  return resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: MAIL_FROM,
     to: email,
     replyTo: MAIL_TO,
     subject: `We've received your message — ${subject}`,
     html,
   });
+
+  if (error) {
+    throw new Error(error.message || 'Resend rejected the auto-reply email.');
+  }
+  return data;
 }
 
 /**
@@ -103,11 +118,20 @@ export async function sendBroadcastEmail({ to, subject, message }) {
     </div>
   `;
 
-  return resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: MAIL_FROM,
     to,
     replyTo: MAIL_TO,
     subject,
     html,
   });
+
+  // Same as the other send functions: Resend reports per-recipient
+  // failures via `error`, not by rejecting the promise. Throwing here is
+  // what makes Promise.allSettled in the /broadcast route correctly count
+  // this recipient under failedCount instead of sentCount.
+  if (error) {
+    throw new Error(error.message || `Resend rejected the broadcast email to ${to}.`);
+  }
+  return data;
 }

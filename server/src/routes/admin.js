@@ -160,9 +160,16 @@ router.post('/broadcast', async (req, res) => {
     const results = await Promise.allSettled(
       batch.map(({ email }) => sendBroadcastEmail({ to: email, subject, message }))
     );
-    results.forEach((result) => {
-      if (result.status === 'fulfilled') sentCount += 1;
-      else failedCount += 1;
+    results.forEach((result, idx) => {
+      if (result.status === 'fulfilled') {
+        sentCount += 1;
+      } else {
+        failedCount += 1;
+        console.error(
+          `[admin] Broadcast to ${batch[idx]?.email} failed:`,
+          result.reason?.message || result.reason
+        );
+      }
     });
   }
 
