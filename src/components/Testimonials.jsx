@@ -136,9 +136,9 @@ export default function Testimonials() {
 
         {/* Header row with arrow controls */}
         <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto" data-purpose="scroll-controls">
-          <span className="text-sm text-gray-400">
+          {/* <span className="text-sm text-gray-400">
             Scroll to see all {testimonials.length} testimonial{testimonials.length === 1 ? '' : 's'}
-          </span>
+          </span> */}
           <div className="flex gap-3">
             <button
               type="button"
