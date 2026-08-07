@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchPublishedTestimonials } from '../lib/testimonialApi';
 
 // Pulls the company name out of a role string like "CEO, Bright Solutions"
@@ -15,7 +16,7 @@ function TestimonialCard({ testimonial }) {
 
   return (
     <div
-      className="bg-white rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow duration-300 p-6"
+      className="bg-white rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow duration-300 p-6 w-[320px] sm:w-[360px] flex-shrink-0 snap-start"
       data-purpose="testimonial-card"
     >
       <div>
@@ -85,6 +86,11 @@ function TestimonialCard({ testimonial }) {
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const scrollerRef = useRef(null);
+
+  const scrollBy = (amount) => {
+    scrollerRef.current?.scrollBy({ left: amount, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -128,8 +134,39 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto" data-purpose="cards-grid">
+        {/* Header row with arrow controls */}
+        <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto" data-purpose="scroll-controls">
+          <span className="text-sm text-gray-400">
+            Scroll to see all {testimonials.length} testimonial{testimonials.length === 1 ? '' : 's'}
+          </span>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => scrollBy(-380)}
+              className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#131b2e] hover:text-white hover:border-[#131b2e] transition-all"
+              aria-label="Scroll testimonials left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollBy(380)}
+              className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-[#131b2e] hover:text-white hover:border-[#131b2e] transition-all"
+              aria-label="Scroll testimonials right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Horizontal scroll row — new testimonials extend the row sideways
+            instead of wrapping onto new lines, so the visitor scrolls
+            through them left/right rather than the section growing taller. */}
+        <div
+          ref={scrollerRef}
+          className="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-6 px-6"
+          data-purpose="cards-scroller"
+        >
           {testimonials.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
