@@ -90,7 +90,7 @@ export default function Leadership() {
               {TEAM.map((member) => (
                 <div
                   key={member.key}
-                  className="w-[240px] h-[330px] flex-shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 snap-start group overflow-hidden flex flex-col"
+                  className="w-[240px] flex-shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 snap-start group overflow-hidden flex flex-col"
                 >
                   <div className="w-full h-[250px] relative shrink-0">
                     <img
@@ -100,9 +100,9 @@ export default function Leadership() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-4 flex flex-col justify-center gap-1 h-[80px]">
-                    <h3 className="text-sm font-bold text-[#1b3322] truncate">{member.name}</h3>
-                    <p className="text-xs text-gray-500 line-clamp-2">{member.role}</p>
+                  <div className="p-4 flex flex-col justify-center gap-1">
+                    <h3 className="text-base font-bold text-[#1b3322] leading-snug">{member.name}</h3>
+                    <p className="text-sm text-gray-500">{member.role}</p>
                   </div>
                 </div>
               ))}
