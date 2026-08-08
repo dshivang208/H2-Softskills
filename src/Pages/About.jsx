@@ -115,7 +115,7 @@ function About() {
               simple internal standard: ship work we would be proud to put our name on.
             </p>
             <p>
-              Today, with 120+ projects delivered and a growing roster of long-term clients,
+              Today, with 150+ projects delivered and a growing roster of long-term clients,
               H2 Softskills operates as a stable, process-driven partner rather than a
               vendor for a single project. We combine strategy, design, and engineering
               under one roof, so the businesses we work with get continuity — the same
