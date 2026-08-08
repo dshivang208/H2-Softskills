@@ -137,12 +137,33 @@ function About() {
       <section className="py-20 px-6 lg:px-16 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-extrabold text-slate-900 mb-6">Our Journey</h2>
-          <p className="text-slate-600 max-w-3xl mb-12 leading-relaxed">
-            Founded with a passion for technology and a vision to empower businesses, H2
-            Softskills has delivered 120+ successful projects across the globe. We combine
-            strategy, creativity, and technology to build digital products that make a
-            difference.
-          </p>
+          <div className="max-w-3xl mb-12 space-y-5 text-slate-600 leading-relaxed">
+            <p>
+              H2 Softskills began with a simple conviction: that technology, applied with
+              discipline and craftsmanship, could help ambitious businesses solve problems
+              far bigger than their size. What started as a small, focused team taking on
+              early web and software projects has since grown into a full-fledged digital
+              solutions partner, trusted by founders, enterprises, and public-sector clients
+              across multiple continents.
+            </p>
+            <p>
+              Over the years, our practice has matured well beyond writing code. We have
+              built cloud infrastructure that scales through unpredictable demand, shipped
+              mobile products used by thousands of people daily, engineered CRM and
+              automation systems that quietly save our clients hundreds of hours a month,
+              and stood up AI-driven tools that turn raw data into decisions. Each engagement
+              has sharpened our process, expanded our engineering bench, and reinforced a
+              simple internal standard: ship work we would be proud to put our name on.
+            </p>
+            <p>
+              Today, with 120+ projects delivered and a growing roster of long-term clients,
+              H2 Softskills operates as a stable, process-driven partner rather than a
+              vendor for a single project. We combine strategy, design, and engineering
+              under one roof, so the businesses we work with get continuity — the same
+              team that scopes the problem is the one that ships, supports, and evolves the
+              solution long after launch.
+            </p>
+          </div>
 
           {/* Stats Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
