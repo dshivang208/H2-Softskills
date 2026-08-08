@@ -50,7 +50,7 @@ export default function Leadership() {
         <div className="flex flex-col lg:flex-row items-start gap-12 relative">
           {/* Left header */}
           <div className="lg:w-1/4 lg:-mt-3">
-            <h6 className="text-[#005320] text-xs tracking-widest mb-4 font-semibold">OUR LEADERSHIP</h6>
+            <h6 className="text-[#005320] text-base tracking-widest mb-4 font-semibold">OUR LEADERSHIP</h6>
             <h2 className="text-[32px] leading-tight font-extrabold mb-6 text-[#071837]">
               Meet the People Behind <span className="text-[#005320]">H2 Softskills</span>
             </h2>

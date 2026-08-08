@@ -1,5 +1,5 @@
 import { Lightbulb, Users, ShieldCheck, Rocket, Smile, Star, Users2, Heart, Settings, Flag } from 'lucide-react';
-import logo1 from '../assets/logo1.png';
+import aboutHeroBg from '../assets/about-hero-bg.png';
 import WhyChooseUs from '../components/WhyChooseUs';
 import Leadership from '../components/about/Leadership';
 
@@ -55,10 +55,14 @@ function About() {
   return (
     <main className="min-h-screen flex flex-col justify-center">
       {/* Hero Section */}
-      <section className="bg-[#010816] text-white pt-10 pb-20 px-6 lg:px-16 overflow-hidden relative">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="z-10">
+      <section
+        className="bg-[#010816] text-white pt-10 pb-14 px-6 lg:px-16 overflow-hidden relative bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${aboutHeroBg})` }}
+      >
+        <div className="absolute inset-0 bg-[#010816]/40 pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Content */}
+          <div className="max-w-2xl">
             <span className="text-[#00ff88] font-bold text-xs pb-4 tracking-widest uppercase mb-4 block">
               About Us
             </span>
@@ -83,51 +87,6 @@ function About() {
                   <p className="text-xs text-slate-400">{description}</p>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Right Content: Atomic Graphic */}
-          <div className="relative flex justify-center items-center h-[500px]">
-            {/* Background decorative glow */}
-            <div className="absolute w-96 h-96 bg-[#2563eb]/20 rounded-full blur-[120px] pointer-events-none" />
-
-            <div className="relative w-full h-full flex items-center justify-center">
-              {/* Central Nucleus (Logo) */}
-              <div className="relative z-20 w-56 h-auto about-animate-glow">
-                <img
-                  src={logo1}
-                  alt="H2 Softskills"
-                  className="w-24 sm:w-28 md:w-32 lg:w-32 h-auto object-contain opacity-95 lg:opacity-50 drop-shadow-[0_0_25px_rgba(0,255,136,0.35)] lg:drop-shadow-[0_0_20px_rgba(0,255,136,0.25)] mx-auto lg:mx-0 lg:translate-x-8"
-                />
-              </div>
-
-              {/* Premium Orbital System */}
-              <div className="about-orbit-container">
-                {/* Outer Ring 1 */}
-                <div className="about-orbit-ring w-[450px] h-[180px] rotate-[30deg] border-[#2563eb]/30">
-                  <div className="about-electron-path about-path-1">
-                    <div className="about-electron top-0 left-1/2 -translate-x-1/2 bg-[#2563eb] shadow-[0_0_15px_#2563eb]" />
-                  </div>
-                </div>
-                {/* Middle Ring 2 */}
-                <div className="about-orbit-ring w-[400px] h-[160px] rotate-[-45deg] border-[#00ff88]/30">
-                  <div className="about-electron-path about-path-2">
-                    <div className="about-electron top-0 left-1/2 -translate-x-1/2 bg-[#00ff88] shadow-[0_0_15px_#00ff88]" />
-                  </div>
-                </div>
-                {/* Inner Ring 3 */}
-                <div className="about-orbit-ring w-[350px] h-[140px] rotate-[90deg] border-white/20">
-                  <div className="about-electron-path about-path-3">
-                    <div className="about-electron top-0 left-1/2 -translate-x-1/2 bg-white shadow-[0_0_15px_#ffffff]" />
-                  </div>
-                </div>
-                {/* Extra Fast Ring 4 */}
-                <div className="about-orbit-ring w-[300px] h-[120px] rotate-[150deg] border-[#2563eb]/20">
-                  <div className="about-electron-path about-path-4">
-                    <div className="about-electron top-0 left-1/2 -translate-x-1/2 bg-[#2563eb] shadow-[0_0_10px_#2563eb]" />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
