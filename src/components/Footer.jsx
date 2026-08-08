@@ -12,12 +12,12 @@ const quickLinks = [
 ];
 
 const services = [
-  'Web & Full Stack Development',
-  'Mobile App Development',
-  'Blockchain Solutions',
-  'CRM Solutions',
-  'Digital Marketing',
-  'AI & Automation',
+  { name: 'Web & Full Stack Development', path: '/services' },
+  { name: 'Mobile App Development', path: '/services' },
+  { name: 'Blockchain Solutions', path: '/services' },
+  { name: 'CRM Solutions', path: '/services' },
+  { name: 'Digital Marketing', path: '/services' },
+  { name: 'AI & Automation', path: '/services' },
 ];
 
 const technologies = ['MERN Stack', 'Next.js', 'Blockchain', 'AWS & DevOps', 'More'];
