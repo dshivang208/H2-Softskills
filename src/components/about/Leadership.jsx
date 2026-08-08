@@ -45,37 +45,37 @@ export default function Leadership() {
   }, []);
 
   return (
-    <section className="bg-white py-28 relative overflow-hidden font-['Hanken_Grotesk']" data-purpose="leadership-section">
+    <section className="bg-white py-20 relative overflow-hidden font-['Hanken_Grotesk']" data-purpose="leadership-section">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="flex flex-col lg:flex-row items-start gap-16 relative">
+        <div className="flex flex-col lg:flex-row items-start gap-12 relative">
           {/* Left header */}
           <div className="lg:w-1/4 lg:-mt-3">
-            <h6 className="text-[#005320] text-sm tracking-widest mb-5 font-semibold">OUR LEADERSHIP</h6>
-            <h2 className="text-[40px] leading-tight font-extrabold mb-8 text-[#071837]">
+            <h6 className="text-[#005320] text-xs tracking-widest mb-4 font-semibold">OUR LEADERSHIP</h6>
+            <h2 className="text-[32px] leading-tight font-extrabold mb-6 text-[#071837]">
               Meet the People Behind <span className="text-[#005320]">H2 Softskills</span>
             </h2>
-            <p className="text-base text-[#45464e] mb-8">
+            <p className="text-sm text-[#45464e] mb-8">
               A team of passionate professionals dedicated to building a better tomorrow.
             </p>
-            <button className="bg-[#005320] text-white px-7 py-3.5 rounded-lg flex items-center gap-2 group hover:gap-3 transition-all">
-              <span className="text-[18px] font-bold">Meet Our Team</span>
-              <ArrowRight className="w-5 h-5" strokeWidth={2.5} />
+            <button className="bg-[#005320] text-white px-6 py-3 rounded-lg flex items-center gap-2 group hover:gap-3 transition-all">
+              <span className="text-[16px] font-bold">Meet Our Team</span>
+              <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
             </button>
 
-            <div className="flex gap-4 mt-10">
+            <div className="flex gap-4 mt-8">
               <button
-                className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center hover:bg-[#1b3322] hover:text-white hover:border-[#1b3322] transition-all"
+                className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-[#1b3322] hover:text-white hover:border-[#1b3322] transition-all"
                 onClick={() => scrollBy(-300)}
                 aria-label="Previous team member"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button
-                className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center hover:bg-[#1b3322] hover:text-white hover:border-[#1b3322] transition-all"
+                className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-[#1b3322] hover:text-white hover:border-[#1b3322] transition-all"
                 onClick={() => scrollBy(300)}
                 aria-label="Next team member"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -85,14 +85,14 @@ export default function Leadership() {
             <div
               ref={carouselRef}
               onScroll={handleScroll}
-              className="flex overflow-x-auto gap-8 pb-4 snap-x snap-mandatory scroll-smooth"
+              className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scroll-smooth"
             >
               {TEAM.map((member) => (
                 <div
                   key={member.key}
-                  className="w-[300px] h-[420px] flex-shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 snap-start group overflow-hidden flex flex-col"
+                  className="w-[240px] h-[330px] flex-shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 snap-start group overflow-hidden flex flex-col"
                 >
-                  <div className="w-full h-[320px] relative shrink-0">
+                  <div className="w-full h-[250px] relative shrink-0">
                     <img
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                       alt={member.alt}
@@ -100,15 +100,15 @@ export default function Leadership() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-5 flex flex-col justify-center gap-1 h-[100px]">
-                    <h3 className="text-lg font-bold text-[#1b3322] truncate">{member.name}</h3>
-                    <p className="text-sm text-gray-500 line-clamp-2">{member.role}</p>
+                  <div className="p-4 flex flex-col justify-center gap-1 h-[80px]">
+                    <h3 className="text-sm font-bold text-[#1b3322] truncate">{member.name}</h3>
+                    <p className="text-xs text-gray-500 line-clamp-2">{member.role}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
+            <div className="mt-5 h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
               <div
                 className="h-full rounded-full bg-[#1b3322] transition-all duration-150"
                 style={{
@@ -118,8 +118,8 @@ export default function Leadership() {
               />
             </div>
 
-            <div className="mt-8 flex justify-center">
-              <button className="border-2 border-[#071837] text-[#071837] px-10 py-4 rounded-lg font-bold hover:bg-[#071837] hover:text-white transition-all">
+            <div className="mt-6 flex justify-center">
+              <button className="border-2 border-[#071837] text-[#071837] px-8 py-3 rounded-lg font-bold hover:bg-[#071837] hover:text-white transition-all">
                 Meet Our Entire Team
               </button>
             </div>
