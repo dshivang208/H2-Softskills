@@ -148,7 +148,7 @@ export default function Footer() {
               </li> */}
               <li className="flex items-center gap-2 text-gray-400 text-sm">
                 <Mail className="w-4 h-4 flex-shrink-0 text-[#4edea3]" strokeWidth={2} />
-                <span>dvps2818@gmail.com</span>
+                <span>h2softskillsadmin@gmail.com</span>
               </li>
               <li className="flex items-start gap-2 text-gray-400 text-sm">
   <MapPin

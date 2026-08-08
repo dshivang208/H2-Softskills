@@ -3,7 +3,7 @@ import { Phone, Mail, MapPin, Clock, ArrowRight, Loader2, CheckCircle2, AlertCir
 
 const contactInfo = [
   // { icon: Phone, label: 'PHONE', value: '+91 98765-43210' },
-  { icon: Mail, label: 'EMAIL', value: 'dvps2818@gmail.com' },
+  { icon: Mail, label: 'EMAIL', value: 'h2softskillsadmin@gmail.com' },
   { icon: MapPin, label: 'LOCATION', value: '58 Spirit Boulevard, Cranbourne East, Victoria 3977, Australia' },
   { icon: Clock, label: 'BUSINESS HOURS', value: 'Mon - Sat: 9:00 AM - 7:00 PM' },
 ];
