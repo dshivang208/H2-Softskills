@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import virendraFounderImage from "../../assets/honey-director.png";
 import sarabjitDirectorImage from "../../assets/Sarabjit-director.png";
@@ -29,10 +29,25 @@ const TEAM = [
 
 export default function Leadership() {
   const carouselRef = useRef(null);
+  const [scrollPct, setScrollPct] = useState(0);
+  const [thumbPct, setThumbPct] = useState(30);
 
   const scrollBy = (amount) => {
     carouselRef.current?.scrollBy({ left: amount, behavior: "smooth" });
   };
+
+  const handleScroll = () => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const pct = maxScroll > 0 ? (el.scrollLeft / maxScroll) * 100 : 0;
+    setScrollPct(pct);
+    setThumbPct(Math.min(100, (el.clientWidth / el.scrollWidth) * 100));
+  };
+
+  useEffect(() => {
+    handleScroll();
+  }, []);
 
   return (
     <section className="bg-white py-20 relative overflow-hidden font-['Hanken_Grotesk']" data-purpose="leadership-section">
@@ -40,11 +55,11 @@ export default function Leadership() {
         <div className="flex flex-col lg:flex-row items-start gap-12 relative">
           {/* Left header */}
           <div className="lg:w-1/4 lg:-mt-3">
-            <h6 className="text-[#1b3322] text-xs tracking-widest mb-4 font-semibold">OUR LEADERSHIP</h6>
-            <h2 className="text-[32px] leading-tight font-extrabold mb-6 text-[#1b3322]">
-              Meet the People Behind <span className="text-[#1b3322]">H2 Softskills</span>
+            <h6 className="text-[#005320] text-xs tracking-widest mb-4 font-semibold">OUR LEADERSHIP</h6>
+            <h2 className="text-[32px] leading-tight font-extrabold mb-6 text-[#071837]">
+              Meet the People Behind <span className="text-[#005320]">H2 Softskills</span>
             </h2>
-            <p className="text-sm text-gray-500 mb-8">
+            <p className="text-sm text-[#45464e] mb-8">
               A team of passionate professionals dedicated to building a better tomorrow.
             </p>
             {/* <button className="bg-[#1b3322] text-white px-6 py-3 rounded-lg flex items-center gap-2 group hover:gap-3 transition-all font-bold">
@@ -74,6 +89,7 @@ export default function Leadership() {
           <div className="lg:w-3/4 w-full relative">
             <div
               ref={carouselRef}
+              onScroll={handleScroll}
               className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scroll-smooth"
             >
               {TEAM.map((member) => (
@@ -102,10 +118,14 @@ export default function Leadership() {
               ))}
             </div>
 
-            <div className="flex justify-center gap-2 mt-4">
-              <div className="h-2 w-2 rounded-full bg-[#c1ff00]" />
-              <div className="h-2 w-2 rounded-full bg-gray-200" />
-              <div className="h-2 w-2 rounded-full bg-gray-200" />
+            <div className="mt-4 h-1.5 w-full rounded-full bg-gray-200 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-[#1b3322] transition-all duration-150"
+                style={{
+                  width: `${thumbPct}%`,
+                  transform: `translateX(${(scrollPct * (100 - thumbPct)) / thumbPct}%)`,
+                }}
+              />
             </div>
           </div>
         </div>
