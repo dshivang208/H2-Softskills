@@ -119,9 +119,9 @@ export default function Leadership() {
             </div>
 
             <div className="mt-6 flex justify-center">
-              <button className="border-2 border-[#071837] text-[#071837] px-8 py-3 rounded-lg font-bold hover:bg-[#071837] hover:text-white transition-all">
+              {/* <button className="border-2 border-[#071837] text-[#071837] px-8 py-3 rounded-lg font-bold hover:bg-[#071837] hover:text-white transition-all">
                 Meet Our Entire Team
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
