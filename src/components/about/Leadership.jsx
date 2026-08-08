@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import amitDirectorImage from "../../assets/honey-director.jpeg";
 
 const LinkedinIcon = () => (
   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -8,38 +9,16 @@ const LinkedinIcon = () => (
 );
 
 const TEAM = [
+  
+  
   {
-    key: "rohit",
-    name: "Rohit Malhotra",
-    role: "Founder & CEO",
-    image:
-      "",
-    alt: "Rohit Image",
-  },
-  {
-    key: "neha",
-    name: "Neha Sharma",
-    role: "Director - Operations",
-    image:
-      "",
-    alt: "Neha's Image",
-  },
-  {
-    key: "amit",
-    name: "Amit Verma",
+    key: "honey",
+    name: "Honey",
     role: "Director - Sales & Strategy",
-    image:
-      "",
-    alt: "Amit's Image",
+    image: amitDirectorImage,
+    alt: "Honey's Image",
   },
-  {
-    key: "priya",
-    name: "Priya Mehta",
-    role: "Tech - Head",
-    image:
-      "",
-    alt: "Priya's Image",
-  },
+  
 ];
 
 export default function Leadership() {
