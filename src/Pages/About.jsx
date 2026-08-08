@@ -22,10 +22,10 @@ const heroFeatures = [
 ];
 
 const stats = [
-  { icon: Rocket, value: '120+', label: 'Projects Delivered' },
-  { icon: Smile, value: '60+', label: 'Happy Clients' },
-  { icon: Star, value: '5+', label: 'Years of Experience' },
-  { icon: Users2, value: '30+', label: 'Team Experts' },
+  { icon: Rocket, value: '150+', label: 'Projects Delivered' },
+  { icon: Smile, value: '80+', label: 'Happy Clients' },
+  { icon: Star, value: '10+', label: 'Years of Experience' },
+  { icon: Users2, value: '20+', label: 'Team Experts' },
 ];
 
 const values = [
@@ -56,7 +56,7 @@ function About() {
     <main className="min-h-screen flex flex-col justify-center">
       {/* Hero Section */}
       <section
-        className="bg-[#010816] text-white pt-10 pb-14 px-6 lg:px-16 overflow-hidden relative bg-cover bg-center bg-no-repeat"
+        className="bg-[#010816] text-white pt-10 pb-24 px-6 lg:px-16 overflow-hidden relative bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${aboutHeroBg})` }}
       >
         <div className="absolute inset-0 bg-[#010816]/40 pointer-events-none" />
@@ -125,17 +125,21 @@ function About() {
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map(({ icon: Icon, value, label }) => (
+          <div className="bg-slate-50 border border-slate-100 rounded-xl grid grid-cols-1 md:grid-cols-4">
+            {stats.map(({ icon: Icon, value, label }, index) => (
               <div
                 key={label}
-                className="bg-slate-50 border border-slate-100 p-8 rounded-xl flex items-center gap-6"
+                className={`relative p-8 flex flex-row items-center justify-center gap-5 border-b border-slate-200 md:border-b-0 last:border-b-0 ${
+                  index !== stats.length - 1
+                    ? "md:after:content-[''] md:after:absolute md:after:right-0 md:after:top-[12.5%] md:after:h-3/4 md:after:w-px md:after:bg-slate-200"
+                    : ''
+                }`}
               >
                 <div className="text-[#2563eb]">
                   <Icon className="h-10 w-10" strokeWidth={1} />
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-slate-900">{value}</div>
+                  <div className="text-2xl font-extrabold text-[#00a572]">{value}</div>
                   <div className="text-sm text-slate-500 font-medium">{label}</div>
                 </div>
               </div>

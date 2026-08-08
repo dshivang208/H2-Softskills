@@ -5,7 +5,7 @@ const stats = [
   {
     id: 'projects',
     icon: Rocket,
-    value: '120+',
+    value: '150+',
     label: 'Projects Delivered',
     glow: 'drop-shadow(0 0 5px rgba(34,211,238,0.6))',
     color: '#22d3ee',
@@ -13,7 +13,7 @@ const stats = [
   {
     id: 'clients',
     icon: Smile,
-    value: '60+',
+    value: '80+',
     label: 'Happy Clients',
     glow: 'drop-shadow(0 0 5px rgba(168,85,247,0.6))',
     color: '#a855f7',
@@ -21,7 +21,7 @@ const stats = [
   {
     id: 'experience',
     icon: Star,
-    value: '5+',
+    value: '10+',
     label: 'Years of Experience',
     glow: 'drop-shadow(0 0 5px rgba(34,197,94,0.6))',
     color: '#22c55e',
@@ -30,7 +30,7 @@ const stats = [
   {
     id: 'team',
     icon: Users,
-    value: '30+',
+    value: '20+',
     label: 'Team Experts',
     glow: 'drop-shadow(0 0 5px rgba(34,211,238,0.6))',
     color: '#60a5fa',
