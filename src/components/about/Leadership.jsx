@@ -15,7 +15,7 @@ const TEAM = [
   },
   {
     key: "sarabjit",
-    name: "Sarabjit Singh Gulati",
+    name: "Sarabjeet Singh Gulati",
     role: "Director - Finance",
     image: sarabjitDirectorImage,
     alt: "sarabjit's Image",
