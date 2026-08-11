@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { fetchPublishedProjects } from '../lib/projectsApi';
+import SEO from '../components/SEO';
 
 const accentText = {
   primary: 'text-[#003594]',
@@ -82,6 +83,11 @@ function Projects() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 bg-[#faf8ff]">
+      <SEO
+        title="Projects"
+        description="See real projects H2 Softskills has shipped — from cricket-scoring platforms to school management portals, built and running in production."
+        path="/projects"
+      />
       {/* Header Section */}
       <div className="mb-12">
         <p className="text-[#003594] font-bold text-sm tracking-widest uppercase mb-3 font-['Hanken_Grotesk']">

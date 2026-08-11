@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, ChevronRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { fetchPublishedPosts, fetchPopularPosts, API_URL } from '../lib/blogApi';
+import SEO from '../components/SEO';
 
 const DEFAULT_CATEGORIES = [
   'Web Development',
@@ -100,6 +101,11 @@ function Blog() {
 
   return (
     <main className="relative min-h-screen bg-[#faf8ff] tech-grid overflow-x-hidden">
+      <SEO
+        title="Blog"
+        description="Insights on web development, mobile apps, blockchain, CRM, digital marketing and AI automation from the H2 Softskills team."
+        path="/blog"
+      />
       {/* Atmospheric Glows */}
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />

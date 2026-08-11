@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 import { fetchPostBySlug, fetchPopularPosts } from '../lib/blogApi';
+import SEO from '../components/SEO';
 
 function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString(undefined, {
@@ -49,6 +50,37 @@ function BlogPost() {
 
   return (
     <main className="relative min-h-screen bg-[#faf8ff] tech-grid overflow-x-hidden">
+      <SEO
+        title={post ? post.title : 'Blog'}
+        description={post ? post.excerpt || post.title : 'Read the latest from H2 Softskills.'}
+        path={`/blog/${slug}`}
+        type="article"
+        image={post?.image || undefined}
+        jsonLd={
+          post
+            ? {
+                '@context': 'https://schema.org',
+                '@type': 'BlogPosting',
+                headline: post.title,
+                description: post.excerpt || post.title,
+                author: {
+                  '@type': 'Organization',
+                  name: 'H2 Softskills',
+                },
+                publisher: {
+                  '@type': 'Organization',
+                  name: 'H2 Softskills',
+                  logo: {
+                    '@type': 'ImageObject',
+                    url: 'https://h2softskills.com/logo.png',
+                  },
+                },
+                datePublished: post.created_at || post.date,
+                mainEntityOfPage: `https://h2softskills.com/blog/${slug}`,
+              }
+            : null
+        }
+      />
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />
 

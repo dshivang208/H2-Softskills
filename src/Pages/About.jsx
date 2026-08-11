@@ -1,5 +1,6 @@
 import { Lightbulb, Users, ShieldCheck, Rocket, Smile, Star, Users2, Heart, Settings, Flag } from 'lucide-react';
 import aboutHeroBg from '../assets/about-hero-bg.png';
+import SEO from '../components/SEO';
 import WhyChooseUs from '../components/WhyChooseUs';
 import Leadership from '../components/about/Leadership';
 
@@ -54,6 +55,11 @@ const values = [
 function About() {
   return (
     <main className="min-h-screen flex flex-col justify-center">
+      <SEO
+        title="About Us"
+        description="Learn about H2 Softskills — a process-driven digital solutions partner helping businesses grow with technology, from our mission to the team behind it."
+        path="/about"
+      />
       {/* Hero Section */}
       <section
         className="bg-[#010816] text-white pt-10 pb-24 px-6 lg:px-16 overflow-hidden relative bg-cover bg-center bg-no-repeat"

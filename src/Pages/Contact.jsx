@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const contactInfo = [
   // { icon: Phone, label: 'PHONE', value: '+91 98765-43210' },
@@ -67,6 +68,11 @@ function Contact() {
 
   return (
     <main className="relative min-h-screen bg-[#faf8ff] tech-grid overflow-x-hidden">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with H2 Softskills. Email h2softskillsadmin@gmail.com or reach us in Cranbourne East, Victoria, Australia to start your project."
+        path="/contact"
+      />
       {/* Atmospheric Glows */}
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />

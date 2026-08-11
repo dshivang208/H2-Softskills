@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Loader2, PhoneCall, Sparkles, CheckCircle2 } fro
 import { FALLBACK_SERVICES, mapApiService } from '../components/Services';
 import { fetchPublishedServices } from '../lib/servicesApi';
 import { fetchServiceDetail } from '../lib/serviceDetailApi';
+import SEO from '../components/SEO';
 
 function SectionHeading({ eyebrow, title }) {
   return (
@@ -118,6 +119,24 @@ function ServiceDetail() {
 
   return (
     <main className="relative min-h-screen bg-[#faf8ff] tech-grid overflow-x-hidden">
+      <SEO
+        title={service.title}
+        description={
+          hasContent && detail.intro ? detail.intro : service.description
+        }
+        path={`/services/${serviceId}`}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: service.title,
+          description: hasContent && detail.intro ? detail.intro : service.description,
+          provider: {
+            '@type': 'Organization',
+            name: 'H2 Softskills',
+            url: 'https://h2softskills.com',
+          },
+        }}
+      />
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />
 

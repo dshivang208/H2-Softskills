@@ -11,6 +11,7 @@ import CtaBanner from '../components/CtaBanner';
 import heroGraphic from '../assets/hero-graphic.png';
 import Leadership1 from '../components/about/Leadership';
 import { ArrowRight, Play, Rocket, ShieldCheck, TrendingUp, Users } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const trustBadges = [
   {
@@ -42,6 +43,19 @@ const trustBadges = [
 function Home() {
   return (
     <>
+      <SEO
+        title="H2 Softskills | Custom Web, App & AI Development Company"
+        description="H2 Softskills builds production-grade web platforms, mobile apps, CRM systems, blockchain products and AI automation for businesses ready to scale."
+        path="/"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'H2 Softskills',
+          alternateName: 'H2SoftSkills',
+          url: 'https://h2softskills.com',
+          logo: 'https://h2softskills.com/logo.png',
+        }}
+      />
       {/* Hero Section with Graphic set as Background Image */}
       <main
         className="relative w-full bg-[#020208] bg-contain bg-center bg-no-repeat text-white min-h-[60vh] lg:min-h-[calc(100vh-58px)] flex items-center"

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { FALLBACK_SERVICES, ServiceCard, mapApiService } from '../components/Services';
 import { fetchPublishedServices } from '../lib/servicesApi';
+import SEO from '../components/SEO';
 
 function Services() {
   // All services — including the original 6 — now live in the database and
@@ -25,6 +26,11 @@ function Services() {
 
   return (
     <main className="bg-[#f8fafc] pt-4 pb-16 md:pt-16">
+      <SEO
+        title="Our Services"
+        description="Explore H2 Softskills' services: web & full stack development, mobile apps, blockchain, CRM solutions, digital marketing, and AI & automation."
+        path="/services"
+      />
       {/* Hero Section */}
       <section className="px-6 md:px-12 mb-16 md:mb-24 max-w-7xl mx-auto text-center md:text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-full mb-4">

@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Loader2, FileDown, PhoneCall, Sparkles } from 'lucide-react';
 import { fetchPublishedProjects } from '../lib/projectsApi';
 import { fetchCaseStudy } from '../lib/caseStudyApi';
+import SEO from '../components/SEO';
 
 const accentText = {
   primary: 'text-[#003594]',
@@ -113,6 +114,24 @@ function CaseStudy() {
 
   return (
     <main className="relative min-h-screen bg-[#faf8ff] tech-grid overflow-x-hidden">
+      <SEO
+        title={`${project.title} Case Study`}
+        description={project.description}
+        path={`/projects/${projectId}/case-study`}
+        type="article"
+        image={project.image}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'CreativeWork',
+          name: project.title,
+          description: project.description,
+          creator: {
+            '@type': 'Organization',
+            name: 'H2 Softskills',
+            url: 'https://h2softskills.com',
+          },
+        }}
+      />
       <div className="floating-radial bg-[#003594] top-0 -left-64" />
       <div className="floating-radial bg-[#006c49] bottom-0 -right-64" />
 
