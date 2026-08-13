@@ -49,7 +49,7 @@ export default function Stats() {
   return (
     <section className="w-full pt-4 pb-12 px-4 bg-[#FAF9F6]">
       <div className="w-full max-w-7xl mx-auto" data-purpose="statistics-bar">
-        <div className="stats-container bg-[#030409] rounded-2xl flex flex-wrap lg:flex-nowrap items-center justify-between px-8 p-4 gap-4">
+        <div className="stats-container bg-[#030409] rounded-2xl flex flex-wrap lg:flex-nowrap items-center justify-center lg:justify-between px-8 p-4 gap-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             const iconStyle = stat.ringed
@@ -59,7 +59,7 @@ export default function Stats() {
             return (
               <Fragment key={stat.id}>
                 <div
-                  className="flex items-center flex-1 justify-center lg:justify-start px-4 gap-4 min-w-[200px]"
+                  className="flex items-center justify-center lg:flex-1 lg:justify-start px-4 gap-4 min-w-[200px]"
                   data-purpose="stat-item"
                 >
                   <div
