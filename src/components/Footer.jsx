@@ -146,17 +146,17 @@ export default function Footer() {
                 <Phone className="w-4 h-4 flex-shrink-0 text-[#4edea3]" strokeWidth={2} />
                 <span>+91 98765 43210</span>
               </li> */}
-              <li className="flex items-center gap-2 text-gray-400 text-sm">
-                <Mail className="w-4 h-4 flex-shrink-0 text-[#4edea3]" strokeWidth={2} />
-                <span>h2softskillsadmin@gmail.com</span>
+              <li className="flex items-start gap-2 text-gray-400 text-sm min-w-0">
+                <Mail className="w-4 h-4 flex-shrink-0 text-[#4edea3] mt-0.5" strokeWidth={2} />
+                <span className="break-words min-w-0">h2softskillsadmin@gmail.com</span>
               </li>
-              <li className="flex items-start gap-2 text-gray-400 text-sm">
+              <li className="flex items-start gap-2 text-gray-400 text-sm min-w-0">
   <MapPin
     className="w-4 h-4 flex-shrink-0 text-[#4edea3] mt-0.5"
     strokeWidth={2}
   />
 
-  <span className="flex flex-col">
+  <span className="flex flex-col min-w-0 break-words">
     <span>58 Spirit Blvd</span>
     <span>Cranbourne East, Victoria 3977, Australia</span>
   </span>
