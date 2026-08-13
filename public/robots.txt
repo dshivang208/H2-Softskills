@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 
-Sitemap: https://h2softskills.com/sitemap.xml
+Sitemap: https://www.h2softskills.com/sitemap.xml
