@@ -54,7 +54,7 @@ const values = [
 
 function About() {
   return (
-    <main className="min-h-screen flex flex-col justify-center">
+    <main className="min-h-screen flex flex-col justify-center overflow-x-hidden">
       <SEO
         title="About Us"
         description="Learn about H2 Softskills — a process-driven digital solutions partner helping businesses grow with technology, from our mission to the team behind it."

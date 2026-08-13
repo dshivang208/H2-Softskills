@@ -2,10 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: #FAF9F6; /* Minimalist off-white background */
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Root mount point: same guard, so no page (including ones missing their own
+   overflow-x-hidden wrapper) can push the layout wider than the viewport and
+   make the page horizontally scroll/"float" on mobile. */
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Used by Services.jsx service card carousel */

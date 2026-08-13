@@ -82,7 +82,7 @@ function Projects() {
   }, [projects, activeCategory]);
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 bg-[#faf8ff]">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 bg-[#faf8ff] overflow-x-hidden">
       <SEO
         title="Projects"
         description="See real projects H2 Softskills has shipped — from cricket-scoring platforms to school management portals, built and running in production."

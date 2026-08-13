@@ -27,7 +27,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="min-h-screen bg-[#FAF9F6] text-stone-800 antialiased">
+      <div className="min-h-screen w-full overflow-x-hidden bg-[#FAF9F6] text-stone-800 antialiased">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

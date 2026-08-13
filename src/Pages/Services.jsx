@@ -25,7 +25,7 @@ function Services() {
   }, []);
 
   return (
-    <main className="bg-[#f8fafc] pt-4 pb-16 md:pt-16">
+    <main className="bg-[#f8fafc] pt-4 pb-16 md:pt-16 overflow-x-hidden">
       <SEO
         title="Our Services"
         description="Explore H2 Softskills' services: web & full stack development, mobile apps, blockchain, CRM solutions, digital marketing, and AI & automation."
