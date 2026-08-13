@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
 
   // Items with a `to` are real routes (react-router Link).
   // Items with only `href` are placeholder anchors until those pages exist.
@@ -16,6 +17,10 @@ export default function Navbar() {
     { name: 'Blog', to: '/blog' },
     { name: 'Contact', to: '/contact' },
   ];
+
+  // Exact match for Home ("/"), startsWith for everything else so
+  // nested routes (e.g. /services/web-dev) still show Services as active.
+  const isActive = (to) => (to === '/' ? pathname === '/' : pathname.startsWith(to));
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-stone-200/80 bg-[#FAF9F6]/90 backdrop-blur-md">
@@ -42,7 +47,11 @@ export default function Navbar() {
                   className="relative text-[16px] font-medium text-black transition-colors duration-300 hover:text-stone-900 group"
                 >
                   {item.name}
-                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#00b06b] transition-all duration-300 group-hover:w-full" />
+                  <span
+                    className={`absolute bottom-0 left-0 h-[2px] bg-[#00b06b] transition-all duration-300 ${
+                      isActive(item.to) ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
                 </Link>
               ) : (
                 <a
