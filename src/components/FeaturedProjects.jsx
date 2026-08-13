@@ -99,6 +99,42 @@ export default function FeaturedProjects() {
     }
   };
 
+  // The dots only updated on a direct dot click, so dragging/swiping the
+  // carousel or using the arrow buttons left them out of sync with what
+  // was actually visible. Track real scroll position instead, and derive
+  // whichever card is closest to it.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || projects.length === 0) return;
+
+    let frame = null;
+    const handleScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        const children = Array.from(el.children);
+        if (children.length === 0) return;
+        const scrollLeft = el.scrollLeft;
+        let closest = 0;
+        let closestDistance = Infinity;
+        children.forEach((child, index) => {
+          const distance = Math.abs(child.offsetLeft - scrollLeft);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closest = index;
+          }
+        });
+        setActiveIndex(closest);
+      });
+    };
+
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      el.removeEventListener('scroll', handleScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [projects]);
+
   if (loading) {
     return (
       <section className="pt-6 pb-8 md:pt-8 md:pb-16 px-6 md:px-12 max-w-[1440px] mx-auto">
