@@ -31,7 +31,7 @@ function FeatureBlock({ feature }) {
   const Icon = feature.icon;
   return (
     <article data-purpose="feature-block">
-      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#c1ff00] text-[#1b3322] mb-3">
+      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#00b06b] text-white mb-3">
         <Icon className="w-5 h-5" strokeWidth={2} />
       </div>
       <h3 className="font-['Hanken_Grotesk'] text-lg font-bold mb-2">{feature.title}</h3>
@@ -43,15 +43,15 @@ function FeatureBlock({ feature }) {
 export default function WhyChooseUs() {
   return (
     <section
-      className="py-9 px-4 md:px-8 max-w-6xl mx-auto font-['Hanken_Grotesk'] text-[#1b3322]"
+      className="py-9 px-4 md:px-8 max-w-6xl mx-auto font-['Hanken_Grotesk'] text-[#131b2e]"
       data-purpose="why-choose-us-section"
     >
       {/* Header */}
       <header className="text-center mb-8" data-purpose="section-header">
         <div className="inline-flex items-center gap-2 mb-3">
           <div className="flex">
-            <div className="w-3.5 h-3.5 bg-[#c1ff00] rounded-full" />
-            <div className="w-3.5 h-3.5 bg-[#1b3322] rounded-full -ml-1 opacity-80" />
+            <div className="w-3.5 h-3.5 bg-[#00b06b] rounded-full" />
+            <div className="w-3.5 h-3.5 bg-[#131b2e] rounded-full -ml-1 opacity-80" />
           </div>
           <span className="text-sm font-bold tracking-tight">Why Choose Us</span>
         </div>
@@ -73,8 +73,8 @@ export default function WhyChooseUs() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk7Wwc1HQdoBUHa3ZHbZHUBJEe1j9DuS5CBSJ_tgO27s_Arky0WsHVwA6ObqSKfYXW0OYCm91Sw5GFpDMJzVrdTEunsFqDC5MPSKXaI6VBT2wC-eN8tWljiC2o_q7WctzUcBJlJ2T8vQBBfZYm-E6vyPZ9aNGqH_6zAgQ3m05vRgZipAoVt-pZo4Ewit6Fjo4uHKzQ-yLzTK8as7Qzj-2dhvZ7p3asusf1vRV8w56Jbpm1Zxn3Uewa7w"
             />
             {/* Sparkle decorations */}
-            <div className="absolute bottom-16 -left-2 text-[#c1ff00] text-3xl">✦</div>
-            <div className="absolute bottom-8 left-3 text-[#c1ff00] text-4xl">✦</div>
+            <div className="absolute bottom-16 -left-2 text-[#4edea3] text-3xl">✦</div>
+            <div className="absolute bottom-8 left-3 text-[#4edea3] text-4xl">✦</div>
           </div>
 
           {/* Right side of the left column: stacked photo + lime graphic */}
@@ -89,19 +89,19 @@ export default function WhyChooseUs() {
             </div>
 
             {/* Lime graphic block */}
-            <div className="h-1/2 min-h-[90px] bg-[#c1ff00] rounded-2xl flex items-center justify-center relative overflow-hidden">
+            <div className="h-1/2 min-h-[90px] bg-gradient-to-br from-[#00b06b] to-[#004e92] rounded-2xl flex items-center justify-center relative overflow-hidden">
               <svg className="w-full h-full opacity-60" preserveAspectRatio="none" viewBox="0 0 100 100">
                 <path
                   d="M50 0 C50 25 50 25 50 50 C50 75 50 75 50 100"
                   fill="none"
-                  stroke="#1b3322"
+                  stroke="#FAF9F6"
                   strokeWidth="2"
                 />
-                <circle cx="50" cy="20" fill="#1b3322" r="3" />
-                <circle cx="50" cy="40" fill="#1b3322" r="3" />
-                <circle cx="50" cy="60" fill="#1b3322" r="3" />
-                <circle cx="50" cy="80" fill="#1b3322" r="3" />
-                <path d="M30 0 Q 70 25 30 50 T 30 100" fill="none" stroke="#1b3322" strokeWidth="1.5" />
+                <circle cx="50" cy="20" fill="#FAF9F6" r="3" />
+                <circle cx="50" cy="40" fill="#FAF9F6" r="3" />
+                <circle cx="50" cy="60" fill="#FAF9F6" r="3" />
+                <circle cx="50" cy="80" fill="#FAF9F6" r="3" />
+                <path d="M30 0 Q 70 25 30 50 T 30 100" fill="none" stroke="#FAF9F6" strokeWidth="1.5" />
               </svg>
               {/* Half-circle cutout, bottom-left */}
               <div className="absolute bottom-0 left-0 w-20 h-20 bg-white rounded-tr-full transform translate-y-10 -translate-x-10" />
@@ -110,7 +110,7 @@ export default function WhyChooseUs() {
         </div>
 
         {/* Right column: dark feature card, 2x2 grid */}
-        <div className="bg-[#1b3322] rounded-2xl p-6 lg:p-8 text-white" data-purpose="features-card-container">
+        <div className="bg-[#131b2e] rounded-2xl p-6 lg:p-8 text-white" data-purpose="features-card-container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-7">
             {features.map((feature) => (
               <FeatureBlock key={feature.title} feature={feature} />
