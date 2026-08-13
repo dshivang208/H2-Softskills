@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import logo from '../assets/logo.png';
 
@@ -75,13 +75,27 @@ const socialLinks = [
 //  - an array of { name, path } objects (Quick Links) — rendered as real
 //    react-router <Link>s so they actually navigate.
 function FooterColumn({ title, links }) {
+  const { pathname } = useLocation();
+
+  // React Router's <Link> only scrolls/navigates when the pathname
+  // actually changes. Several footer links (e.g. all Services links)
+  // point to the same route, so clicking one while already on that
+  // page does nothing. Manually scroll to top in that case so the
+  // click still does something visible.
+  const handleClick = (path) => (event) => {
+    if (path === pathname) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div>
       <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-4">{title}</h4>
       <ul className="space-y-2.5">
         {links.map((link) => {
           const isRoute = typeof link === 'object' && link !== null;
-          const key = isRoute ? link.path : link;
+          const key = isRoute ? `${link.name}-${link.path}` : link;
           const label = isRoute ? link.name : link;
 
           return (
@@ -89,6 +103,7 @@ function FooterColumn({ title, links }) {
               {isRoute ? (
                 <Link
                   to={link.path}
+                  onClick={handleClick(link.path)}
                   className="text-gray-400 text-sm hover:text-[#4edea3] transition-colors"
                 >
                   {label}
