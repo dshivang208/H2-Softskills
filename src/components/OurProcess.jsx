@@ -123,17 +123,29 @@ export default function OurProcess() {
           </svg>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-6 md:gap-0">
-          {/* Row 1: Steps 1, 3, 5 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-0 md:mb-6">
+        <div className="relative z-10">
+          {/* Mobile: plain sequential list, numbered 1 through 5 top to bottom */}
+          <div className="flex flex-col gap-6 md:hidden">
             <StepCard step={step1} />
+            <StepCard step={step2} />
             <StepCard step={step3} />
+            <StepCard step={step4} />
             <StepCard step={step5} />
           </div>
-          {/* Row 2: Steps 2, 4 (offset between row 1 columns) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 md:px-20">
-            <StepCard step={step2} className="md:translate-y-3" />
-            <StepCard step={step4} className="md:translate-y-3" />
+
+          {/* Desktop: staggered zigzag layout (row 1: steps 1, 3, 5 — row 2: steps 2, 4, offset) */}
+          <div className="hidden md:flex md:flex-col md:gap-0">
+            {/* Row 1: Steps 1, 3, 5 */}
+            <div className="grid md:grid-cols-3 md:gap-8 md:mb-6">
+              <StepCard step={step1} />
+              <StepCard step={step3} />
+              <StepCard step={step5} />
+            </div>
+            {/* Row 2: Steps 2, 4 (offset between row 1 columns) */}
+            <div className="grid md:grid-cols-2 md:gap-8 md:px-20">
+              <StepCard step={step2} className="md:translate-y-3" />
+              <StepCard step={step4} className="md:translate-y-3" />
+            </div>
           </div>
         </div>
       </div>
