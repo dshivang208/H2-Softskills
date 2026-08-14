@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 // Central place for site-wide identity — change once, applies everywhere.
 export const SITE_NAME = 'H2 Softskills';
-export const SITE_URL = 'https://h2softskills.com';
+export const SITE_URL = 'https://www.h2softskills.com';
 export const DEFAULT_DESCRIPTION =
   'H2 Softskills is a digital solutions company building web platforms, mobile apps, CRM systems, blockchain products and AI-driven automation for growing businesses.';
 export const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
