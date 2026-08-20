@@ -140,8 +140,16 @@ async function main() {
     await browser.close();
     cleanupAndExit(0);
   } catch (err) {
-    console.error("Prerender failed:", err);
-    cleanupAndExit(1);
+    // Prerendering is an enhancement, not a requirement: this is a
+    // client-only SPA and SEO.jsx already sets the right <title>/meta
+    // tags at runtime once JS executes (see the file header comment).
+    // If prerendering can't run in this environment — e.g. a headless
+    // Chromium/shared-library mismatch on the build host — that should
+    // degrade gracefully, not take down the whole deployment. So this
+    // logs a clear warning and exits 0 (success) instead of 1.
+    console.warn("\n⚠️  Skipping prerender step — pages will still work, just without pre-baked SEO tags.");
+    console.warn(`   Reason: ${err.message}\n`);
+    cleanupAndExit(0);
   }
 }
 
