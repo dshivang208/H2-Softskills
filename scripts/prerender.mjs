@@ -24,7 +24,39 @@
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import puppeteer from "puppeteer";
+
+// Vercel's build container is missing several shared libraries
+// (libnss3.so and friends) that the regular `puppeteer` package's
+// bundled Chromium needs, so `puppeteer.launch()` fails there with
+// "error while loading shared libraries: libnss3.so". Locally (and
+// on most other machines) the bundled Chromium works fine.
+//
+// Fix: on Vercel (or any CI), launch via @sparticuz/chromium, a
+// Chromium build made specifically for serverless/build containers
+// like Vercel's and AWS Lambda's, paired with puppeteer-core (which
+// has the same API but doesn't bundle its own browser). Everywhere
+// else, keep using the regular `puppeteer` package as before.
+const IS_SERVERLESS_BUILD = Boolean(process.env.VERCEL || process.env.CI);
+
+async function launchBrowser() {
+  if (IS_SERVERLESS_BUILD) {
+    const [{ default: chromium }, { default: puppeteerCore }] = await Promise.all([
+      import("@sparticuz/chromium"),
+      import("puppeteer-core"),
+    ]);
+    return puppeteerCore.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+    });
+  }
+
+  const { default: puppeteer } = await import("puppeteer");
+  return puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+}
 
 const PORT = 4322;
 const HOST = "127.0.0.1";
@@ -81,10 +113,7 @@ async function main() {
   try {
     await waitForServer(BASE_URL);
 
-    const browser = await puppeteer.launch({
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+    const browser = await launchBrowser();
 
     for (const route of ROUTES) {
       const page = await browser.newPage();

@@ -25,6 +25,8 @@
     "oxlint": "^1.71.0",
     "postcss": "^8.5.18",
     "puppeteer": "^23.6.0",
+    "puppeteer-core": "^23.6.0",
+    "@sparticuz/chromium": "^131.0.1",
     "tailwindcss": "^3.4.19",
     "vite": "^8.1.1"
   }
