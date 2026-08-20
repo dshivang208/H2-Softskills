@@ -127,13 +127,14 @@ export default function Navbar() {
             )
           )}
           <div className="mt-6 px-4">
-            <a
-              href="#"
+            <Link
+              to="/contact"
+              onClick={() => setIsOpen(false)}
               className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#00b06b] to-[#004e92] py-3 text-base font-semibold text-white shadow-md transition-all duration-300 active:scale-95"
             >
               <span>Lets Build Together</span>
               <ArrowRight className="h-5 w-5" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

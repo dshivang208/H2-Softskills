@@ -70,10 +70,10 @@ const socialLinks = [
 ];
 
 // `links` can be either:
-//  - an array of plain strings (Services, Technologies) — rendered as
-//    plain anchors, since those aren't real routes.
-//  - an array of { name, path } objects (Quick Links) — rendered as real
-//    react-router <Link>s so they actually navigate.
+//  - an array of plain strings (Technologies) — rendered as plain text
+//    with a hover color effect only; no href/link underneath.
+//  - an array of { name, path } objects (Quick Links, Services) — rendered
+//    as real react-router <Link>s so they actually navigate.
 function FooterColumn({ title, links }) {
   const { pathname } = useLocation();
 
@@ -109,12 +109,9 @@ function FooterColumn({ title, links }) {
                   {label}
                 </Link>
               ) : (
-                <a
-                  href="#"
-                  className="text-gray-400 text-sm hover:text-[#4edea3] transition-colors"
-                >
+                <span className="text-gray-400 text-sm hover:text-[#4edea3] transition-colors cursor-default">
                   {label}
-                </a>
+                </span>
               )}
             </li>
           );
