@@ -1,156 +1,189 @@
 // scripts/prerender.mjs
 //
-// Runs after `vite build`. Boots the production build locally with
-// `vite preview`, visits each real static route with a headless
-// browser, waits for React (and the custom SEO.jsx component) to
-// finish writing the <title>/<meta> tags, then writes the fully
-// rendered HTML to disk as a static file for that route.
+// Runs after `vite build`. Writes a real, per-route static HTML file for
+// every static marketing route, with the correct <title>/<meta
+// description>/<link rel="canonical">/OG tags baked directly into the raw
+// HTML — no headless browser required.
 //
-// Why: this is a client-only React SPA (react-router-dom, no SSR),
-// so every URL is served the same generic index.html and the real
-// per-page <title>/description only appear after JS runs (see
-// src/components/SEO.jsx). Crawlers that don't wait for that end up
-// indexing the generic homepage title/description for every page.
-// Prerendering bakes the correct tags into the actual HTML file
-// served for each route, so no JS execution is required to see them.
+// WHY THIS REPLACED THE OLD PUPPETEER-BASED VERSION:
+// The previous version booted a `vite preview` server and used
+// Puppeteer/@sparticuz-chromium to visit each route and snapshot the
+// post-JS DOM. That's fragile inside Vercel's build container (missing
+// shared libs, launch timeouts, version drift) — and it had a top-level
+// catch that logged a warning and exited 0 ("success") on failure. That
+// meant a broken prerender step never showed up as a failed deploy: it
+// just silently stopped producing per-route files.
+//
+// The practical effect: every route (/about, /services, /projects, /blog,
+// /contact) fell back to serving the exact same generic index.html —
+// same <title>, same <meta description>, and critically the same
+// hardcoded <link rel="canonical" href="https://www.h2softskills.com/">.
+// Googlebot's raw HTML fetch (which happens before/independent of JS
+// execution) saw identical content with a canonical tag pointing every
+// route back to "/", so it folded all the inner pages into the homepage
+// and only ever indexed "/". This script removes that entire failure
+// mode: the tags below are static strings pulled straight from each
+// page's <SEO ... /> props (see src/Pages/*.jsx), so there is nothing
+// that can fail to launch, time out, or silently no-op.
 //
 // Dynamic/data-driven routes (/services/:serviceId,
-// /projects/:projectId/case-study, /blog/:slug) are intentionally
-// NOT prerendered here — their slugs come from the backend and would
-// need a separate "fetch all slugs, then render each" step. Admin
-// routes are skipped too (already noindex via robots.txt and behind
-// a login). The static marketing routes below are the priority.
+// /projects/:projectId/case-study, /blog/:slug) are NOT covered here —
+// their slugs come from the backend. Admin routes are skipped (noindex
+// via robots.txt, behind login). If those need indexing later, generate
+// them the same way: fetch the slugs, then call writeRoute() for each.
 
-import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-// Vercel's build container is missing several shared libraries
-// (libnss3.so and friends) that the regular `puppeteer` package's
-// bundled Chromium needs, so `puppeteer.launch()` fails there with
-// "error while loading shared libraries: libnss3.so". Locally (and
-// on most other machines) the bundled Chromium works fine.
-//
-// Fix: on Vercel (or any CI), launch via @sparticuz/chromium, a
-// Chromium build made specifically for serverless/build containers
-// like Vercel's and AWS Lambda's, paired with puppeteer-core (which
-// has the same API but doesn't bundle its own browser). Everywhere
-// else, keep using the regular `puppeteer` package as before.
-const IS_SERVERLESS_BUILD = Boolean(process.env.VERCEL || process.env.CI);
-
-async function launchBrowser() {
-  if (IS_SERVERLESS_BUILD) {
-    const [{ default: chromium }, { default: puppeteerCore }] = await Promise.all([
-      import("@sparticuz/chromium"),
-      import("puppeteer-core"),
-    ]);
-    return puppeteerCore.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-    });
-  }
-
-  const { default: puppeteer } = await import("puppeteer");
-  return puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-}
-
-const PORT = 4322;
-const HOST = "127.0.0.1";
-const BASE_URL = `http://${HOST}:${PORT}`;
+const SITE_URL = "https://www.h2softskills.com";
+const SITE_NAME = "H2 Softskills";
 const DIST_DIR = path.resolve("dist");
+const TEMPLATE_PATH = path.join(DIST_DIR, "index.html");
 
-// Every static route worth prerendering (no dynamic :param segments).
-const ROUTES = ["/", "/about", "/services", "/projects", "/blog", "/contact"];
+// Keep these in sync with the <SEO title=... description=... path=... />
+// props on each page component. This is intentionally a flat list of
+// plain strings, not a build-time import of the JSX, so this script has
+// zero runtime dependencies beyond Node's fs.
+const ROUTES = [
+  {
+    path: "/",
+    // Home passes no `title` prop, so SEO.jsx's default applies — keep
+    // this identical to the <title> already in index.html.
+    title: `${SITE_NAME} | Custom Web, App & AI Development Company`,
+    description:
+      "H2 Softskills builds production-grade web platforms, mobile apps, CRM systems, blockchain products and AI automation for businesses ready to scale.",
+  },
+  {
+    path: "/about",
+    title: `About Us | ${SITE_NAME}`,
+    description:
+      "Learn about H2 Softskills — a process-driven digital solutions partner helping businesses grow with technology, from our mission to the team behind it.",
+  },
+  {
+    path: "/services",
+    title: `Our Services | ${SITE_NAME}`,
+    description:
+      "Explore H2 Softskills' services: web & full stack development, mobile apps, blockchain, CRM solutions, digital marketing, and AI & automation.",
+  },
+  {
+    path: "/projects",
+    title: `Projects | ${SITE_NAME}`,
+    description:
+      "See real projects H2 Softskills has shipped — from cricket-scoring platforms to school management portals, built and running in production.",
+  },
+  {
+    path: "/blog",
+    title: `Blog | ${SITE_NAME}`,
+    description:
+      "Insights on web development, mobile apps, blockchain, CRM, digital marketing and AI automation from the H2 Softskills team.",
+  },
+  {
+    path: "/contact",
+    title: `Contact Us | ${SITE_NAME}`,
+    description:
+      "Get in touch with H2 Softskills. Email h2softskillsadmin@gmail.com or reach us in Cranbourne East, Victoria, Australia to start your project.",
+  },
+];
 
-function waitForServer(url, timeoutMs = 20000) {
-  const start = Date.now();
-  return new Promise((resolve, reject) => {
-    const attempt = async () => {
-      try {
-        const res = await fetch(url);
-        if (res.ok || res.status === 404) return resolve();
-      } catch {
-        // server not up yet
-      }
-      if (Date.now() - start > timeoutMs) {
-        return reject(new Error(`Timed out waiting for ${url}`));
-      }
-      setTimeout(attempt, 300);
-    };
-    attempt();
-  });
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
-function outputPathFor(route) {
-  if (route === "/") return path.join(DIST_DIR, "index.html");
-  return path.join(DIST_DIR, route.replace(/^\//, ""), "index.html");
+function replaceTag(html, regex, replacement) {
+  if (!regex.test(html)) {
+    throw new Error(`Expected tag not found in template (pattern: ${regex})`);
+  }
+  return html.replace(regex, replacement);
 }
 
-async function main() {
-  if (!existsSync(DIST_DIR)) {
-    console.error("dist/ not found — run `vite build` before prerendering.");
+function buildHtmlForRoute(template, route) {
+  const canonicalUrl = `${SITE_URL}${route.path}`;
+  const title = escapeHtml(route.title);
+  const description = escapeHtml(route.description);
+
+  let html = template;
+
+  html = replaceTag(html, /<title>[^<]*<\/title>/, `<title>${title}</title>`);
+  html = replaceTag(
+    html,
+    /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
+    `<meta name="description" content="${description}" />`
+  );
+  html = replaceTag(
+    html,
+    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/>/,
+    `<link rel="canonical" href="${canonicalUrl}" />`
+  );
+  html = replaceTag(
+    html,
+    /<meta\s+property="og:title"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:title" content="${title}" />`
+  );
+  html = replaceTag(
+    html,
+    /<meta\s+property="og:description"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:description" content="${description}" />`
+  );
+  html = replaceTag(
+    html,
+    /<meta\s+property="og:url"\s+content="[^"]*"\s*\/>/,
+    `<meta property="og:url" content="${canonicalUrl}" />`
+  );
+  html = replaceTag(
+    html,
+    /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/>/,
+    `<meta name="twitter:title" content="${title}" />`
+  );
+  html = replaceTag(
+    html,
+    /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/>/,
+    `<meta name="twitter:description" content="${description}" />`
+  );
+
+  return html;
+}
+
+function outputPathFor(routePath) {
+  if (routePath === "/") return path.join(DIST_DIR, "index.html");
+  return path.join(DIST_DIR, routePath.replace(/^\//, ""), "index.html");
+}
+
+function main() {
+  if (!existsSync(TEMPLATE_PATH)) {
+    console.error("dist/index.html not found — run `vite build` before prerendering.");
     process.exit(1);
   }
 
-  console.log(`Starting preview server on ${BASE_URL} ...`);
-  // shell: true is required on Windows, where "npx" actually resolves to
-  // "npx.cmd" and Node's spawn() won't find it without going through a shell.
-  const server = spawn(
-    "npx",
-    ["vite", "preview", "--port", String(PORT), "--host", HOST, "--strictPort"],
-    { stdio: "inherit", shell: true }
-  );
+  const template = readFileSync(TEMPLATE_PATH, "utf-8");
+  let failures = 0;
 
-  const cleanupAndExit = (code) => {
-    server.kill();
-    process.exit(code);
-  };
-
-  try {
-    await waitForServer(BASE_URL);
-
-    const browser = await launchBrowser();
-
-    for (const route of ROUTES) {
-      const page = await browser.newPage();
-      const url = `${BASE_URL}${route}`;
-      console.log(`Prerendering ${route} ...`);
-
-      try {
-        await page.goto(url, { waitUntil: "networkidle0", timeout: 30000 });
-        // Small extra settle time for SEO.jsx's useEffect to flush.
-        await new Promise((r) => setTimeout(r, 150));
-
-        const html = await page.content();
-        const outPath = outputPathFor(route);
-        mkdirSync(path.dirname(outPath), { recursive: true });
-        writeFileSync(outPath, html, "utf-8");
-        console.log(`  -> wrote ${path.relative(process.cwd(), outPath)}`);
-      } catch (err) {
-        console.error(`  ! failed to prerender ${route}:`, err.message);
-      } finally {
-        await page.close();
-      }
+  for (const route of ROUTES) {
+    try {
+      const html = buildHtmlForRoute(template, route);
+      const outPath = outputPathFor(route.path);
+      mkdirSync(path.dirname(outPath), { recursive: true });
+      writeFileSync(outPath, html, "utf-8");
+      console.log(`Prerendered ${route.path} -> ${path.relative(process.cwd(), outPath)}`);
+    } catch (err) {
+      failures += 1;
+      console.error(`! Failed to prerender ${route.path}: ${err.message}`);
     }
-
-    await browser.close();
-    cleanupAndExit(0);
-  } catch (err) {
-    // Prerendering is an enhancement, not a requirement: this is a
-    // client-only SPA and SEO.jsx already sets the right <title>/meta
-    // tags at runtime once JS executes (see the file header comment).
-    // If prerendering can't run in this environment — e.g. a headless
-    // Chromium/shared-library mismatch on the build host — that should
-    // degrade gracefully, not take down the whole deployment. So this
-    // logs a clear warning and exits 0 (success) instead of 1.
-    console.warn("\n⚠️  Skipping prerender step — pages will still work, just without pre-baked SEO tags.");
-    console.warn(`   Reason: ${err.message}\n`);
-    cleanupAndExit(0);
   }
+
+  if (failures > 0) {
+    // Unlike the old script, fail the build loudly. A silent partial
+    // prerender is exactly the bug this rewrite exists to prevent —
+    // better to block a bad deploy than ship pages with wrong canonical
+    // tags again.
+    console.error(`\n${failures} route(s) failed to prerender. Failing the build.`);
+    process.exit(1);
+  }
+
+  console.log(`\nAll ${ROUTES.length} static routes prerendered successfully.`);
 }
 
 main();

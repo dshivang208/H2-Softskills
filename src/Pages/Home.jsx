@@ -44,7 +44,7 @@ function Home() {
   return (
     <>
       <SEO
-        title="H2 Softskills | Custom Web, App & AI Development Company"
+        // title="H2 Softskills | Custom Web, App & AI Development Company"
         description="H2 Softskills builds production-grade web platforms, mobile apps, CRM systems, blockchain products and AI automation for businesses ready to scale."
         path="/"
         jsonLd={{
