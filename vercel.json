@@ -5,12 +5,6 @@
       "has": [{ "type": "host", "value": "h2-softskills.vercel.app" }],
       "destination": "https://www.h2softskills.com/$1",
       "permanent": true
-    },
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "h2softskills.com" }],
-      "destination": "https://www.h2softskills.com/$1",
-      "permanent": true
     }
   ],
   "rewrites": [
